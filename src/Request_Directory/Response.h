@@ -10,14 +10,18 @@ enum Status {
     INVALID_REQUEST     // value 3
 };
 
+/// response object that contains the result of request
 class Response {
     public:
+        // fields
         Status status;
         string errorMsg;
         string payload;
 
+        // default constructor
         Response() : status(OK), errorMsg(""), payload("") {}
 
+        // constructor
         Response(Status s, const string& error = "", const string& payload = "") :
             status(s), errorMsg(error), payload(payload) {}
 };

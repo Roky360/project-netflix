@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(project_netflix src/main.cpp
         src/database/Database.h
         src/database/FilesDatabase.cpp
-        src/database/FilesDatabase.h)
+        src/database/FilesDatabase.h
+        src/utils/Utils.cpp
+        src/utils/Utils.h)
 
 # Add Google Test
 include(FetchContent)
@@ -27,7 +29,9 @@ enable_testing()
 add_executable(MyTests tests/files_db_tests.cpp
         src/database/Database.h
         src/database/FilesDatabase.cpp
-        src/database/FilesDatabase.h)
+        src/database/FilesDatabase.h
+        src/utils/Utils.cpp
+        src/utils/Utils.h)
 
 # Link GTest and pthread for tests
 target_link_libraries(MyTests gtest gtest_main pthread)

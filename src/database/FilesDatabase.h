@@ -3,20 +3,28 @@
 
 #include "Database.h"
 #include <iostream>
+#include <unordered_map>
 
 using namespace std;
 
 namespace db {
 
     class FilesDatabase : Database {
+    private:
+    public:
+        // maps user id to its line in the database file
+        unordered_map<string, int> uidToLineMap;
+
+        void loadDbFile();
+
     public:
         static const string DB_FILE_PATH; // TODO: move this to the State Manager
 
-        explicit FilesDatabase() = default;
+        explicit FilesDatabase();
 
-        void addMovieToUser(int userId, int movieId) override;
+        void addMovieToUser(string userId, string movieId) override;
 
-        vector<int> getUserMovies(int userId) override;
+        vector<int> getUserMovies(string userId) override;
     };
 } // db
 

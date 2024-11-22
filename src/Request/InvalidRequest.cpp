@@ -4,6 +4,6 @@
 
 Response* InvalidRequest::execute() {
     Response* response = new Response(INVALID_REQUEST, "invalid request.");
-    cout << "invalid request" << endl; // for debug, TODO: delete the cout
+    //cout << "invalid request" << endl; // for debug
     return response;
 };

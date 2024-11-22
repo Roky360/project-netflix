@@ -1,4 +1,6 @@
 #include <fstream>
+#include <sstream>
+#include <algorithm>
 #include "FilesDatabase.h"
 #include "../utils/Utils.h"
 
@@ -32,44 +34,61 @@ namespace db {
             i++;
         }
     }
-    // TODO: not working!!
-    void FilesDatabase::addMovieToUser(string userId, string movieId) {
-        // user id doesnt exist
-        if (this->uidToLineMap.find(userId) == this->uidToLineMap.end()) {
-            this->uidToLineMap[userId] = this->uidToLineMap.size();
 
-            ofstream f;
-            f.open(DB_FILE_PATH, ios_base::app);
-            f << userId + " " + movieId << '\n';
-            f.close();
-        } else {
-            int lineNum = this->uidToLineMap[userId];
-            fstream f(DB_FILE_PATH);
-            string line;
-            // all file contents
-            string content((istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
-            f.seekg(0);
+    void FilesDatabase::addMovieToUser(const string &userId, const string &movieId) {
+        ifstream inputFile(DB_FILE_PATH);
+        vector<string> fileLines; // holds all the lines including the updated line, to be rewritten back to the db file
+        string line;
+        bool userFound = false;
 
-            // skip all lines until the line of the desired user
-            size_t startOfLinePos = 0;
-            for (int i = 0; i <= lineNum; ++i) {
-                getline(f, line);
-                startOfLinePos += line.length() + 1;
+        // read all lines
+        while (getline(inputFile, line)) {
+            istringstream iss(line);
+            string currUserId;
+            iss >> currUserId;
+
+            // userId exists in the file
+            if (currUserId == userId) {
+                userFound = true;
+                vector<string> movies;
+                string movie;
+
+                // read existing movie IDs
+                while (iss >> movie) {
+                    movies.push_back(movie);
+                }
+
+                // add the new movie if not already in the list
+                if (find(movies.begin(), movies.end(), movieId) == movies.end()) {
+                    movies.push_back(movieId);
+                }
+
+                // create the updated line
+                ostringstream oss;
+                oss << userId;
+                for (const auto &m: movies) {
+                    oss << " " << m;
+                }
+                line = oss.str();
             }
-            // read user's line and add the movieId to it
 
-            content.erase(startOfLinePos, line.length()); // remove old line
-
-            line.insert(line.length(), " " + movieId);
-            // override the user's line with the updated line
-            content.insert(startOfLinePos, line);
-
-            // write updated contents (rewrite file)
-            f.seekp(0);
-            f << content;
-
-            f.close();
+            fileLines.push_back(line);
         }
+        inputFile.close();
+
+        // if user was not found, add a new line for the user at the end of the file
+        if (!userFound) {
+            ostringstream oss;
+            oss << userId << " " << movieId;
+            fileLines.push_back(oss.str());
+        }
+
+        // rewrite all lines to the file
+        ofstream outputFile(DB_FILE_PATH, ios::trunc);
+        for (const auto &l: fileLines) {
+            outputFile << l << "\n";
+        }
+        outputFile.close();
     }
 
     vector<int> FilesDatabase::getUserMovies(string userId) {
@@ -91,7 +110,7 @@ namespace db {
         getline(f, line);
 
         // read all movie IDs to an array
-        vector<string> movieIdsStr = Utils::split(line, " ");
+        vector<string> movieIdsStr = Utils::split(line.substr(userId.length() + 1), " ");
         vector<int> movieIds;
         movieIds.reserve(movieIdsStr.size());
         // convert each element to int

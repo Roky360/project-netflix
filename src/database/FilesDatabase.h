@@ -8,7 +8,9 @@
 using namespace std;
 
 namespace db {
-
+    /**
+     * Allows saving data to a file.
+     */
     class FilesDatabase : Database {
     private:
     public:
@@ -22,7 +24,7 @@ namespace db {
 
         explicit FilesDatabase();
 
-        void addMovieToUser(string userId, string movieId) override;
+        void addMovieToUser(const string &userId, const string &movieId) override;
 
         vector<int> getUserMovies(string userId) override;
     };

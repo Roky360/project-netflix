@@ -27,15 +27,19 @@ namespace db {
         // extract the user id (the first word) from each line and store it in the map with the line number
         while (getline(f, line)) {
             size_t spaceIdx = line.find(' ');
-            if (spaceIdx == string::npos)
+            if (spaceIdx == string::npos) // skip empty lines
                 continue;
-            string uid = line.substr(0, spaceIdx); // get user id (first word)
-            this->uidToLineMap[uid] = i;
-            i++;
+            // try to parse the user id. skip the line if failed
+            try {
+                int uid = stoi(line.substr(0, spaceIdx)); // get user id (first word)
+                this->uidToLineMap[uid] = i;
+                i++;
+            } catch (invalid_argument &e) {
+            }
         }
     }
 
-    void FilesDatabase::addMovieToUser(const string &userId, const string &movieId) {
+    void FilesDatabase::addMovieToUser(int userId, int movieId) {
         ifstream inputFile(DB_FILE_PATH);
         vector<string> fileLines; // holds all the lines including the updated line, to be rewritten back to the db file
         string line;
@@ -44,14 +48,14 @@ namespace db {
         // read all lines
         while (getline(inputFile, line)) {
             istringstream iss(line);
-            string currUserId;
+            int currUserId;
             iss >> currUserId;
 
             // userId exists in the file
             if (currUserId == userId) {
                 userFound = true;
-                vector<string> movies;
-                string movie;
+                vector<int> movies;
+                int movie;
 
                 // read existing movie IDs
                 while (iss >> movie) {
@@ -91,7 +95,7 @@ namespace db {
         outputFile.close();
     }
 
-    vector<int> FilesDatabase::getUserMovies(string userId) {
+    vector<int> FilesDatabase::getUserMovies(const int userId) {
         // user id does not exist - return empty array
         if (this->uidToLineMap.find(userId) == this->uidToLineMap.end()) {
             return {};
@@ -110,7 +114,7 @@ namespace db {
         getline(f, line);
 
         // read all movie IDs to an array
-        vector<string> movieIdsStr = Utils::split(line.substr(userId.length() + 1), " ");
+        vector<string> movieIdsStr = Utils::split(line.substr(to_string(userId).length() + 1), " ");
         vector<int> movieIds;
         movieIds.reserve(movieIdsStr.size());
         // convert each element to int

@@ -1,24 +1,32 @@
-//
-// Created by avi on 11/22/2024. BASSAD
-//
-
 #ifndef PROJECT_NETFLIX_STATEMANAGER_H
 #define PROJECT_NETFLIX_STATEMANAGER_H
 
-#include "../database/Database.h"
 #include <map>
 #include <string>
 #include <vector>
+#include "../database/Database.h"
+#include "../Request/Request.h"
+#include "../Request_Provider/RequestProvider.h"
 
 using namespace db;
 using namespace std;
 
-typedef Request(*requestGen)(vector<string>);
+typedef Request *(*requestGen)(vector<string>);
 
 namespace app {
-// Singleton design pattern, state manager is responsible for connecting all the classes
-// Holding important info such as the database or requests
+    /**
+    * Singleton design pattern, state manager is responsible for connecting all the classes.
+    * Holding important info such as the database or requests.
+    */
     class StateManager {
+    private:
+        static StateManager *instance;
+        Database *db{};
+        map<string, requestGen> mapRequest;
+        RequestProvider *rp{};
+
+        StateManager() = default;
+
     public:
         // Delete copy constructor and assignment operator to ensure a single instance
         StateManager(const StateManager &) = delete;
@@ -36,7 +44,7 @@ namespace app {
          * Database Getter
          * @return db, Database
          */
-        Database *getDb();
+        Database *getDb() const;
 
         /**
          * Database Setter
@@ -48,7 +56,7 @@ namespace app {
          * RequestProvider Getter
          * @return RequestProvider
          */
-        RequestProvider *getRequestProvider();
+        RequestProvider *getRequestProvider() const;
 
         /**
          * RequestProvide Setter
@@ -67,15 +75,6 @@ namespace app {
          * @param reqMap RequestMap
          */
         void setRequestMap(map<string, requestGen> reqMap);
-
-    private:
-        //Fields
-        static StateManager *instance;
-        Database *db;
-        map<string, requestGen> mapRequest;
-        RequestProvider *rp;
-
-        StateManager() = default;
     };
 }
 

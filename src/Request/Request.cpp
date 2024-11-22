@@ -13,7 +13,7 @@ Request* Request::fromName(const string& reqName, vector<string> args) {
     // get the map
     auto map = manager->getRequestMap();
 
-    // if he didnt find the request
+    // if he didn't find the request
     if (map.find(reqName) == map.end())  {
         return new InvalidRequest();
     }

@@ -5,12 +5,27 @@ Response* AddMovieRequest::execute() {
     // get the move service instance
     MovieService* service = MovieService::getInstance();
 
-    // get the user id
-    string userId = args[0];
+    // if the user didnt entered enough arguments.
+    if (args.size() <= 1) {
+        return new Response(INVALID_ARG, "Not enough arguments.");
+    }
+
+    // get the user id from the arguments
+    int userId;
+    try {
+        userId = stoi(args[0]);
+    } catch (...) {
+        return new Response(INVALID_ARG, "User ID must be numbers.");
+    }
 
     // call add movie service for each movie
     for (int i = 1; i < args.size(); ++i) {
-        service.addMovieToUser(userId, args[i]);
+        // try to change the movie id type to int
+        try {
+            service.addMovieToUser(userId, stoi(args[i]));
+        } catch (...) {
+            return new Response(INVALID_ARG, "Movie ID must be numbers.");
+        }
     }
 
     // return ok response

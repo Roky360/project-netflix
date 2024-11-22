@@ -4,6 +4,12 @@
 using namespace std;
 
 Response * HelpRequest::execute() {
+
+    // if the user entered arguments - return invalid request.
+    if (!args.empty()) {
+        return new Response(INVALID_REQUEST, "invalid request.");
+    }
+
     // print the menu
     cout << "add [userid] [movieid1] [movieid2]..." << endl;
     cout << "recommand [userid] [movieid]" << endl;

@@ -32,12 +32,12 @@ string intArrToString(const vector<int> &arr) {
 TEST(FilesDbTests, addMovieTouser_SanityTest) {
     auto *db = new FilesDatabase();
 
-    db->addMovieToUser("104", "1001");
-    db->addMovieToUser("104", "1002");
-    db->addMovieToUser("102", "1001");
-    db->addMovieToUser("105", "1008");
-    db->addMovieToUser("102", "1009");
-    db->addMovieToUser("104", "1001");
+    db->addMovieToUser(104, 1001);
+    db->addMovieToUser(104, 1002);
+    db->addMovieToUser(102, 1001);
+    db->addMovieToUser(105, 1008);
+    db->addMovieToUser(102, 1009);
+    db->addMovieToUser(104, 1001);
 
     EXPECT_EQ(readDbFile(), "104 1001 1002\n102 1001 1009\n105 1008");
 
@@ -47,10 +47,10 @@ TEST(FilesDbTests, addMovieTouser_SanityTest) {
 TEST(FilesDbTests, getUserMovies_SanityTest) {
     auto *db = new FilesDatabase();
 
-    EXPECT_EQ(intArrToString(db->getUserMovies("104")), intArrToString({1001, 1002}));
-    EXPECT_EQ(intArrToString(db->getUserMovies("102")), intArrToString({1001, 1009}));
-    EXPECT_EQ(intArrToString(db->getUserMovies("105")), intArrToString({1008}));
-    EXPECT_EQ(intArrToString(db->getUserMovies("1001")), intArrToString({}));
+    EXPECT_EQ(intArrToString(db->getUserMovies(104)), intArrToString({1001, 1002}));
+    EXPECT_EQ(intArrToString(db->getUserMovies(102)), intArrToString({1001, 1009}));
+    EXPECT_EQ(intArrToString(db->getUserMovies(105)), intArrToString({1008}));
+    EXPECT_EQ(intArrToString(db->getUserMovies(1001)), intArrToString({}));
 
     delete db;
 }

@@ -7,7 +7,14 @@
 class HelpRequest: public Request {
 
     public:
+        /**
+         * execute the help request - print the menu
+         * @return response
+         */
         Response* execute() override;
+        /**
+         * default constructor.
+         */
         HelpRequest() = default;
 
 };

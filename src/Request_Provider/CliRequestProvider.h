@@ -7,6 +7,10 @@
 class CliRequestProvider : public RequestProvider {
 
     public:
+        /**
+         * return from the user, in console, the wanted request
+         * @return request
+         */
         Request* nextRequest() override;
 };
 

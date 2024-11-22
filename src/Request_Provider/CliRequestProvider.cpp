@@ -28,14 +28,5 @@ Request* CliRequestProvider:: nextRequest() {
         args.push_back(arg);
     }
 
-    // Debug output
-//    cout << "Full input: " << str << endl;
-//    cout << "Request name: " << reqName << endl;
-//    cout << "Arguments: ";
-//    for (const string& a : args) {
-//        cout << a << " ";
-//    }
-//    cout << endl;
-
     return Request::fromName(reqName, args);
 };

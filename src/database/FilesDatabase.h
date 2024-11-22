@@ -11,8 +11,7 @@ namespace db {
     /**
      * Allows saving data to a file.
      */
-    class FilesDatabase : Database {
-    private:
+    class FilesDatabase : public Database {
     public:
         // maps user id to its line in the database file
         unordered_map<string, int> uidToLineMap;
@@ -23,6 +22,8 @@ namespace db {
         static const string DB_FILE_PATH; // TODO: move this to the State Manager
 
         explicit FilesDatabase();
+
+        ~FilesDatabase() = default;
 
         void addMovieToUser(const string &userId, const string &movieId) override;
 

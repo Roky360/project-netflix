@@ -1,9 +1,12 @@
-#include "RecommandMovieRequest.h"
+#include "RecommendMovieRequest.h"
 #include <string>
 
-Response* RecommandMovieRequest::execute() {
+RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {
+}
+
+Response *RecommendMovieRequest::execute() {
     // get the movie service instance
-    MovieService* service = MovieService::getInstance();
+    MovieService *service = MovieService::getInstance();
 
     if (args.size() > 2) {
         return new Response(INVALID_ARG, "To much arguments entered.");
@@ -29,8 +32,7 @@ Response* RecommandMovieRequest::execute() {
         // try to convert the integers to string and if not return error
         try {
             payload += to_string(recommended[i]) + " ";
-        }
-        catch(...) {
+        } catch (...) {
             return new Response(ERROR);
         }
     }

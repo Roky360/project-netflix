@@ -26,6 +26,7 @@ namespace app {
         RequestProvider *rp{};
 
         StateManager() = default;
+        ~StateManager();
 
     public:
         // Delete copy constructor and assignment operator to ensure a single instance

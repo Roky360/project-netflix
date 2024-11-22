@@ -3,8 +3,10 @@
 
 using namespace std;
 
-Response * HelpRequest::execute() {
+HelpRequest::HelpRequest(const vector<string> &args) : Request(args) {
+}
 
+Response *HelpRequest::execute() {
     // if the user entered arguments - return invalid request.
     if (!args.empty()) {
         return new Response(INVALID_REQUEST, "invalid request.");

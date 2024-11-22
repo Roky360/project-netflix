@@ -12,11 +12,13 @@ class AddMovieRequest: public Request {
          * add movies to the user, in the database
          * @return response
          */
-        Response* execute();
+        Response* execute() override;
         /**
          * constructor.
          */
-        AddMovieRequest() = default;
+        AddMovieRequest() = delete;
+
+        explicit AddMovieRequest(const vector<string>& args);
 };
 
 

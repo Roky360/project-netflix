@@ -4,19 +4,20 @@
 #include <string>
 #include <iostream>
 
-class HelpRequest: public Request {
+class HelpRequest : public Request {
+public:
+    /**
+     * execute the help request - print the menu
+     * @return response
+     */
+    Response *execute() override;
 
-    public:
-        /**
-         * execute the help request - print the menu
-         * @return response
-         */
-        Response* execute() override;
-        /**
-         * default constructor.
-         */
-        HelpRequest() = default;
+    /**
+     * default constructor.
+     */
+    HelpRequest() = delete;
 
+    explicit HelpRequest(const vector<string>& args);
 };
 
 

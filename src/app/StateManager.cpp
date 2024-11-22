@@ -3,6 +3,12 @@
 namespace app {
     StateManager *StateManager::instance = nullptr;
 
+    StateManager::~StateManager() {
+        delete instance;
+        delete db;
+        delete rp;
+    }
+
     StateManager *StateManager::getInstance() {
         if (instance == nullptr) {
             instance = new StateManager();

@@ -1,6 +1,8 @@
 #include "AddMovieRequest.h"
 #include <string>
 
+AddMovieRequest::AddMovieRequest(const vector<string>& args) : Request(args) {}
+
 Response* AddMovieRequest::execute() {
     // get the move service instance
     MovieService* service = MovieService::getInstance();

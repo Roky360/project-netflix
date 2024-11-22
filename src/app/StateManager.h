@@ -6,6 +6,7 @@
 #define PROJECT_NETFLIX_STATEMANAGER_H
 
 #include "../database/Database.h"
+#include "../Request_Provider/RequestProvider.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@
 using namespace db;
 using namespace std;
 
-typedef Request(*requestGen)(vector<string>);
+typedef Request*(*requestGen)(vector<string>);
 
 namespace app {
 // Singleton design pattern, state manager is responsible for connecting all the classes

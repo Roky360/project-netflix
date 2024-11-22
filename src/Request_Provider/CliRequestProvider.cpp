@@ -1,5 +1,6 @@
 #include "CliRequestProvider.h"
 #include "../Request/Request.h"
+#include "../Request/InvalidRequest.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -12,7 +13,6 @@ Request* CliRequestProvider:: nextRequest() {
     string str; // hold the input from the user
     string reqName; // holds the request name
 
-
     // get the wanted request from the user
     getline(cin, str);
 
@@ -22,7 +22,7 @@ Request* CliRequestProvider:: nextRequest() {
     // get the first word as the request name
     ss >> reqName;
 
-    // read the rest of the line as arguments
+    // read the rest of the line and enter them to args
     string arg;
     while (ss >> arg) {
         args.push_back(arg);

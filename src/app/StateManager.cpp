@@ -1,6 +1,3 @@
-//
-// Created by avi on 11/22/2024.
-//
 #include "StateManager.h"
 
 namespace app {
@@ -13,7 +10,7 @@ namespace app {
         return instance;
     }
 
-    Database *StateManager::getDb() {
+    Database *StateManager::getDb() const {
         return db;
     }
 
@@ -21,7 +18,7 @@ namespace app {
         this->db = db;
     }
 
-    RequestProvider *StateManager::getRequestProvider() {
+    RequestProvider *StateManager::getRequestProvider() const {
         return rp;
     }
 

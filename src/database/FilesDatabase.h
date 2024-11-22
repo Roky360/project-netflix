@@ -14,7 +14,7 @@ namespace db {
     class FilesDatabase : public Database {
     public:
         // maps user id to its line in the database file
-        unordered_map<string, int> uidToLineMap;
+        unordered_map<int, int> uidToLineMap;
 
         void loadDbFile();
 
@@ -25,9 +25,9 @@ namespace db {
 
         ~FilesDatabase() = default;
 
-        void addMovieToUser(const string &userId, const string &movieId) override;
+        void addMovieToUser(int userId, int movieId) override;
 
-        vector<int> getUserMovies(string userId) override;
+        vector<int> getUserMovies(int userId) override;
     };
 } // db
 

@@ -124,4 +124,14 @@ namespace db {
 
         return movieIds;
     }
+
+    vector<int> FilesDatabase::getAllUserIds() {
+        vector<int> userIds;
+        userIds.reserve(this->uidToLineMap.size());
+        // iterate over the map and extract the keys which are the user IDs
+        for (auto item: this->uidToLineMap) {
+            userIds.push_back(item.first);
+        }
+        return userIds;
+    }
 } // db

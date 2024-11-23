@@ -31,6 +31,13 @@ namespace db {
          * @return An array containing the watched movie IDs.
          */
         virtual vector<int> getUserMovies(int userId) = 0;
+
+        /**
+         * Returns a list of all the User IDs currently stored in the Databse.
+         *
+         * @return A list of all the stored User IDs.
+         */
+        virtual vector<int> getAllUserIds() = 0;
     };
 } // db
 

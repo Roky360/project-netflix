@@ -28,6 +28,8 @@ namespace db {
         void addMovieToUser(int userId, int movieId) override;
 
         vector<int> getUserMovies(int userId) override;
+
+        vector<int> getAllUserIds() override;
     };
 } // db
 

@@ -9,7 +9,9 @@ add_executable(project_netflix src/main.cpp
         src/database/FilesDatabase.cpp
         src/database/FilesDatabase.h
         src/utils/Utils.cpp
-        src/utils/Utils.h)
+        src/utils/Utils.h
+        src/Services/MoviesService.cpp
+        src/Services/MoviesService.h)
 
 # Add Google Test
 include(FetchContent)

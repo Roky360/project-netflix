@@ -5,6 +5,7 @@
 #ifndef PROJECT_NETFLIX_STATEMANAGER_H
 #define PROJECT_NETFLIX_STATEMANAGER_H
 #include "database/Database.h"
+#include "Request_Directory/Response.h"
 #include <map>
 #include <string>
 #include <vector>

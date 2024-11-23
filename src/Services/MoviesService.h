@@ -8,6 +8,7 @@
 #include "../StateManager.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace db;
 using namespace std;
 
@@ -54,7 +55,9 @@ public:
      * @param comparedUsers, vector<int>, the rest of the users which we wish to rank
      * @return vector<int>, a vector of all the grades of each user (not including userID
      */
-    vector<int> rankComparableUsers(int userID, vector<int> comparedUsers);
+    vector<int> rankComparableUsers(int userID, vector<int> *comparedUsers);
+
+    map<int, int> mapComparableMovies(vector<int> *users, vector<int> *ranks);
 
 private:
     static MoviesService *instance;

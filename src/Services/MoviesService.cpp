@@ -40,7 +40,7 @@ vector<int> MoviesService::recommendMovies(int userID, int movieID) {
 
 vector<int> MoviesService::getComparableUsers(int userID, int movieID) {
     vector<int> comparableUsers;
-    auto allUsers = db->getUserIds();
+    auto allUsers = db->getAllUserIds();
     for (int i : allUsers) {
         if (db->userHasMovie(i, movieID) && i != userID) {
             comparableUsers.push_back(i);
@@ -79,7 +79,5 @@ map<int, int> MoviesService::mapComparableMovies(vector<int> *users, vector<int>
     }
     return movieMap;
 }
-
-
 
 

@@ -52,6 +52,8 @@ TEST(FilesDbTests, getUserMovies_SanityTest) {
     EXPECT_EQ(intArrToString(db->getUserMovies(105)), intArrToString({1008}));
     EXPECT_EQ(intArrToString(db->getUserMovies(1001)), intArrToString({}));
 
+    EXPECT_EQ(intArrToString(db->getAllUserIds()), intArrToString({105, 102, 104}));
+
     delete db;
 }
 

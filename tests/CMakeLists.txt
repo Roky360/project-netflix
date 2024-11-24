@@ -1,0 +1,23 @@
+# Tests CMake configuration
+
+# Include gtest
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz
+)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+# Add test executable
+file(GLOB TEST_SOURCES "*.cpp")
+add_executable(unit_tests ${TEST_SOURCES})
+
+# Link GTest and pthread for tests
+target_link_libraries(unit_tests gtest gtest_main pthread)
+
+# Add the test to CTest
+add_test(NAME unit_tests COMMAND unit_tests)
+include(GoogleTest)
+gtest_discover_tests(unit_tests)

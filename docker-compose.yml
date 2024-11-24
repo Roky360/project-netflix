@@ -1,0 +1,18 @@
+services:
+  # Run main application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_TESTS: "OFF"
+    command: ./build/main
+
+  # Run tests
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_TESTS: "ON"
+    command: ./build/unit_tests

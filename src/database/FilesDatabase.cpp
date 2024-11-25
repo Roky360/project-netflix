@@ -134,4 +134,13 @@ namespace db {
         }
         return userIds;
     }
+
+    int FilesDatabase::getUserCount() {
+        return this->uidToLineMap.size();
+    }
+
+    bool FilesDatabase::userHasMovie(const int userId, const int movieId) {
+        auto userMovies = this->getUserMovies(userId);
+        return find(userMovies.begin(), userMovies.end(), movieId) != userMovies.end();
+    }
 } // db

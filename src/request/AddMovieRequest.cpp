@@ -1,11 +1,12 @@
 #include "AddMovieRequest.h"
+#include "../services/MoviesService.h"
 #include <string>
 
 AddMovieRequest::AddMovieRequest(const vector<string>& args) : Request(args) {}
 
 Response* AddMovieRequest::execute() {
     // get the move service instance
-    MovieService* service = MovieService::getInstance();
+    MoviesService* service = MoviesService::getInstance();
 
     // if the user didnt entered enough arguments.
     if (args.size() <= 1) {
@@ -24,7 +25,7 @@ Response* AddMovieRequest::execute() {
     for (int i = 1; i < args.size(); ++i) {
         // try to change the movie id type to int
         try {
-            service.addMovieToUser(userId, stoi(args[i]));
+            service->addMovieToUser(userId, stoi(args[i]));
         } catch (...) {
             return new Response(INVALID_ARG, "Movie ID must be numbers.");
         }

@@ -1,4 +1,5 @@
 #include "RecommendMovieRequest.h"
+#include "../services/MoviesService.h"
 #include <string>
 
 RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {
@@ -6,7 +7,7 @@ RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Reque
 
 Response *RecommendMovieRequest::execute() {
     // get the movie service instance
-    MovieService *service = MovieService::getInstance();
+    MoviesService *service = MoviesService::getInstance();
 
     if (args.size() > 2) {
         return new Response(INVALID_ARG, "To much arguments entered.");
@@ -24,7 +25,7 @@ Response *RecommendMovieRequest::execute() {
     }
 
     // call recommend movies from the service and get the movies
-    vector<int> recommended = service.recommendMovies(userId, movieId);
+    vector<int> recommended = service->recommendMovies(userId, movieId);
 
     // enter the recommended movies to string
     string payload;

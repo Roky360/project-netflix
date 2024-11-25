@@ -24,7 +24,7 @@ vector<int> MoviesService::recommendMovies(int userID, int movieID) {
     vector<int> users = MoviesService::getComparableUsers(userID, movieID);
     vector<int> ranks = MoviesService::rankComparableUsers(userID, &users);
     map<int, int> movieMap = mapComparableMovies(userID, &users, &ranks);
-    //Sets a vector to store all the possible movies we found (first) and their respective ranks (second)
+    // Sets a vector to store all the possible movies we found (first) and their respective ranks (second)
     vector<pair<int, int>> pairs(movieMap.begin(), movieMap.end());
     //Lambda function to sort the vector
     std::sort(pairs.begin(), pairs.end(), [](const auto &a, const auto &b) {

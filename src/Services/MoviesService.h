@@ -35,7 +35,7 @@ public:
     void addMovieToUser(int userID, int movieID);
 
     /**
-     * The original movie-recommendation algorithm of Nakniki-Netflix!
+     *  The original movie-recommendation algorithm of Nakniki-Netflix!
      * Recommends movies to users based on their shared watched movies with other like minded users
      * @param userID String, the user getting the recommend
      * @param movieID String, movie, the movie the user wishes to inspect

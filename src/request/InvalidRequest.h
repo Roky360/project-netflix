@@ -5,7 +5,9 @@
 class InvalidRequest: public Request {
 
     public:
-        /**
+        InvalidRequest();
+
+/**
          * return new invalid request response
          * @return
          */
@@ -13,7 +15,7 @@ class InvalidRequest: public Request {
         /**
          * default constructor
          */
-        InvalidRequest() = default;
+        //InvalidRequest() = default;
 };
 
 

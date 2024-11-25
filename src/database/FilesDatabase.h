@@ -13,6 +13,7 @@ namespace db {
      */
     class FilesDatabase : public Database {
     public:
+        static const string DB_DIRECTORY;
         static const string DB_FILE_PATH;
 
         // maps user id to its line in the database file

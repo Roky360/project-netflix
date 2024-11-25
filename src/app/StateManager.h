@@ -27,14 +27,13 @@ namespace app {
 
         StateManager() = default;
 
-
     public:
+        ~StateManager();
+
         // Delete copy constructor and assignment operator to ensure a single instance
         StateManager(const StateManager &) = delete;
 
         StateManager &operator=(const StateManager &) = delete;
-
-        ~StateManager();
 
         /**
          * Returns a state manager, makes sure there is only one instance existing

@@ -1,13 +1,15 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <direct.h>
 #include "FilesDatabase.h"
 #include "../utils/Utils.h"
 
 using namespace utils;
 
 namespace db {
-    const string FilesDatabase::DB_FILE_PATH = "../data/data.db";
+    const string FilesDatabase::DB_DIRECTORY = "../data";
+    const string FilesDatabase::DB_FILE_PATH = DB_DIRECTORY + "/data.db";
 
     FilesDatabase::FilesDatabase() {
         loadDbFile();
@@ -17,7 +19,7 @@ namespace db {
         ifstream f(DB_FILE_PATH);
         // if db file does not exist, create an empty one and return
         if (!f.good()) {
-            ofstream f(DB_FILE_PATH);
+            mkdir(DB_DIRECTORY.c_str()); // create the DB directory if it doesn't exist
             f.close();
             return;
         }

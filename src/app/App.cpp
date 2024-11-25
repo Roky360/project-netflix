@@ -1,0 +1,22 @@
+#include <iostream>
+#include "App.h"
+#include "StateManager.h"
+#include "../Request/Response.h"
+#include "../Request/Request.h"
+#include "../Request_Provider/RequestProvider.h"
+
+namespace app {
+    void App::run() {
+        auto *sm = StateManager::getInstance();
+        RequestProvider *rp = sm->getRequestProvider();
+
+        while (true) {
+            Request *request = rp->nextRequest();
+            Response *response = request->execute();
+
+            if (!response->payload.empty()) {
+                cout << response->payload << endl;
+            }
+        }
+    }
+} // app

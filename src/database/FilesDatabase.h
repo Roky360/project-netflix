@@ -11,22 +11,30 @@ namespace db {
     /**
      * Allows saving data to a file.
      */
-    class FilesDatabase : Database {
-    private:
+    class FilesDatabase : public Database {
     public:
+        static const string DB_FILE_PATH;
+
         // maps user id to its line in the database file
-        unordered_map<string, int> uidToLineMap;
-
-        void loadDbFile();
-
-    public:
-        static const string DB_FILE_PATH; // TODO: move this to the State Manager
+        unordered_map<int, int> uidToLineMap;
 
         explicit FilesDatabase();
 
-        void addMovieToUser(const string &userId, const string &movieId) override;
+        ~FilesDatabase() override = default;
 
-        vector<int> getUserMovies(string userId) override;
+        /* Methods */
+
+        void loadDbFile();
+
+        void addMovieToUser(int userId, int movieId) override;
+
+        vector<int> getUserMovies(int userId) override;
+
+        vector<int> getAllUserIds() override;
+
+        int getUserCount() override;
+
+        bool userHasMovie(int userId, int movieId) override;
     };
 } // db
 

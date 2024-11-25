@@ -1,31 +1,30 @@
-#include <iostream>
+#include "app/App.h"
+#include "app/StateManager.h"
 #include "database/FilesDatabase.h"
-#include "utils/Utils.h"
+#include "Request/AddMovieRequest.h"
+#include "Request/HelpRequest.h"
+#include "Request/RecommendMovieRequest.h"
+#include "Request_Provider/CliRequestProvider.h"
 
-using namespace std;
+using namespace app;
 using namespace db;
-using namespace utils;
 
 int main() {
-    auto *db = new FilesDatabase();
+    map<string, requestGen> requestMap = {
+        {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
+        {"recommend", [](auto args) -> Request *{ return new RecommendMovieRequest(args); }},
+        {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
+    };
 
-    db->addMovieToUser("104", "1001");
-    db->addMovieToUser("104", "1002");
-    db->addMovieToUser("102", "1001");
-    db->addMovieToUser("105", "1008");
-    db->addMovieToUser("102", "1009");
-//    db->addMovieToUser("104", "1001");
+    auto *sm = StateManager::getInstance();
+    sm->setDb(new FilesDatabase());
+    sm->setRequestMap(requestMap);
+    sm->setRequestProvider(new CliRequestProvider());
 
+    auto *app = new App();
+    app->run();
+
+    delete app;
+    delete sm;
     return 0;
 }
-
-/*
-104 1001 1002
-102 1001
-105 1008
-
-104 1001 1002
-10102 1001 1009
-8
-
- * */

@@ -5,15 +5,17 @@
 #ifndef PROJECT_NETFLIX_MOVIESSERVICE_H
 #define PROJECT_NETFLIX_MOVIESSERVICE_H
 #include "../database/Database.h"
-#include "../StateManager.h"
+#include "../app/StateManager.h"
 #include <string>
 #include <vector>
 #include <algorithm>
 using namespace db;
 using namespace std;
+using namespace app;
 
 class MoviesService {
 public:
+    const int MOVIE_RECOMMENDATION_COUNT = 10;
 // Delete copy constructor and assignment operator to ensure a single instance
     MoviesService(const MoviesService &) = delete;
     MoviesService &operator=(const MoviesService &) = delete;
@@ -41,6 +43,7 @@ public:
      */
     vector<int> recommendMovies(int userID, int movieID);
 
+private:
     /**
      * Returns all the other users that watched the same movie as the given movie, and are not the user
      * @param userID int, The userID we want to compare them to
@@ -57,11 +60,16 @@ public:
      */
     vector<int> rankComparableUsers(int userID, vector<int> *comparedUsers);
 
-    map<int, int> mapComparableMovies(vector<int> *users, vector<int> *ranks);
+    /**
+     * Creates the final scores of each movie in a map
+     * @param userID the original user we compare the rest to
+     * @param users vector<int> The list of users compared
+     * @param ranks vector<int> The recommendation values of each user
+     * @return map<int, int>, the map containing each movie, and their recommendation score
+     */
+    map<int, int> mapComparableMovies(int userID, vector<int> *users, vector<int> *ranks);
 
-private:
     static MoviesService *instance;
-    Database *db;
 
     MoviesService() = default;
 };

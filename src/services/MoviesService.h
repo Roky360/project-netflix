@@ -63,11 +63,12 @@ private:
     /**
      * Creates the final scores of each movie in a map
      * @param userID the original user we compare the rest to
+     * @param movieID the movie the original user inquired about
      * @param users vector<int> The list of users compared
      * @param ranks vector<int> The recommendation values of each user
      * @return map<int, int>, the map containing each movie, and their recommendation score
      */
-    map<int, int> mapComparableMovies(int userID, vector<int> *users, vector<int> *ranks);
+    map<int, int> mapComparableMovies(int userID, int movieID, vector<int> *users, vector<int> *ranks);
 
     static MoviesService *instance;
 

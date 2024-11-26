@@ -20,8 +20,10 @@ add_executable(project_netflix src/main.cpp
         src/utils/Utils.h
         src/services/MoviesService.cpp
         src/services/MoviesService.h
+        src/app/StateManager.h
         src/app/StateManager.cpp
         src/app/App.cpp)
+        #tests/recommendation_algo_tests.cpp)
 
 # Add Google Test
 include(FetchContent)
@@ -45,7 +47,9 @@ add_executable(MyTests tests/my_tests.cpp
         src/database/FilesDatabase.cpp
         src/database/FilesDatabase.h
         src/utils/Utils.cpp
-        src/utils/Utils.h)
+        src/utils/Utils.h
+        tests/recommendation_algo_tests.cpp)
+        #tests/files_db_tests.cpp)
 
 # Link GTest and pthread for tests
 target_link_libraries(MyTests gtest gtest_main pthread)

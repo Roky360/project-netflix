@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_TESTS: "OFF"
-    command: ./build/main
+    command: ./build/project_netflix
 
   # Run tests
   test:

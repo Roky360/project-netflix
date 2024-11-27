@@ -10,8 +10,8 @@ ARG BUILD_TESTS=OFF
 RUN apt-get update && apt-get install -y \
     build-essential \
     wget \
-    libssl-dev \
-    && apt-get clean
+    libssl-dev && \
+    apt-get clean
 
 # Install CMake 3.27.8
 RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-linux-x86_64.sh \
@@ -29,12 +29,21 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-
 WORKDIR /app
 
 # Copy the project files into the container
-COPY . .
+COPY CMakeLists.txt .
+COPY src/ src/
 
 # Build the project
-RUN mkdir build && cd build && \
-    cmake -DCMAKE_VER=${CMAKE_VER} -DBUILD_TESTS=${BUILD_TESTS} .. && \
-    cmake --build .
+#RUN mkdir build && cd build && \
+#    cmake -DCMAKE_VER=${CMAKE_VER} -DBUILD_TESTS=${BUILD_TESTS} ..
+##    cmake --build . \
+#RUN cmake --build .
+
+RUN mkdir -p build && cd build && \
+    cmake -DBUILD_TESTS=${BUILD_TESTS} ..
+RUN cmake --build .
+#    cmake --build ..
+#RUN ls -l
+#RUN chmod +x ./build/project_netflix
 
 # Set the default command to run the main executable
 CMD ["./build/project_netflix"]

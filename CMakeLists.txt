@@ -1,28 +1,32 @@
 # Set cmake version
-set(MIN_VER 3.27.8)
-option(CMAKE_VER "Target cmake version" ${MIN_VER})
-if (CMAKE_VER VERSION_LESS ${MIN_VER})
-    set(CMAKE_VER ${MIN_VER})
-endif ()
-cmake_minimum_required(VERSION ${CMAKE_VER})
+#set(MIN_VER 3.27.8)
+#option(CMAKE_VER "Target cmake version" ${MIN_VER})
+#if (CMAKE_VER VERSION_LESS ${MIN_VER})
+#    set(CMAKE_VER ${MIN_VER})
+#endif ()
+#cmake_minimum_required(VERSION ${CMAKE_VER})
+cmake_minimum_required(VERSION 3.27.8)
 
 project(project_netflix)
 set(CMAKE_CXX_STANDARD 14)
 
 # Main executable
-add_executable(project_netflix src/main.cpp
-        src/Request/AddMovieRequest.h
-        src/Request/RecommendMovieRequest.cpp
-        src/Request/RecommendMovieRequest.h
-        src/Request/HelpRequest.cpp
-        src/Request/InvalidRequest.cpp
-        src/Request/Request.cpp
-        src/Request_Provider/CliRequestProvider.cpp
-        src/database/Database.h
-        src/database/FilesDatabase.cpp
-        src/database/FilesDatabase.h
-        src/utils/Utils.cpp
-        src/utils/Utils.h)
+file(GLOB SOURCES "src/*.cpp")
+add_executable(project_netflix ${SOURCES})
+#add_executable(project_netflix src/main.cpp
+#        src/request/AddMovieRequest.cpp
+#        src/request/AddMovieRequest.h
+#        src/request/RecommendMovieRequest.cpp
+#        src/request/RecommendMovieRequest.h
+#        src/request/HelpRequest.cpp
+#        src/request/InvalidRequest.cpp
+#        src/request/Request.cpp
+#        src/request_Provider/CliRequestProvider.cpp
+#        src/database/Database.h
+#        src/database/FilesDatabase.cpp
+#        src/database/FilesDatabase.h
+#        src/utils/Utils.cpp
+#        src/utils/Utils.h)
 
 # If tests are enabled, include CMake for tests
 option(BUILD_TESTS "Build gtest tests" OFF)

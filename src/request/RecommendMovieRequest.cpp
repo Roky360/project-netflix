@@ -3,8 +3,9 @@
 #include "../database/Database.h"
 #include <string>
 
-RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {
-}
+RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {}
+
+RecommendMovieRequest::RecommendMovieRequest() :Request() {}
 
 Response *RecommendMovieRequest::execute() {
     // get the movie service instance

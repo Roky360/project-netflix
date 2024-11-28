@@ -11,10 +11,7 @@ public:
      */
     Response *execute();
 
-    /**
-     * default constructor
-     */
-    RecommendMovieRequest() = delete;
+    RecommendMovieRequest();
 
     explicit RecommendMovieRequest(const vector<string> &args);
 };

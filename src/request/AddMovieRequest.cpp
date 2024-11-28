@@ -4,6 +4,8 @@
 
 AddMovieRequest::AddMovieRequest(const vector<string>& args) : Request(args) {}
 
+AddMovieRequest::AddMovieRequest() :Request() {}
+
 Response* AddMovieRequest::execute() {
     // get the move service instance
     MoviesService* service = MoviesService::getInstance();

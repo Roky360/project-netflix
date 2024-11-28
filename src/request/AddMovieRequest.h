@@ -13,10 +13,8 @@ class AddMovieRequest: public Request {
          * @return response
          */
         Response* execute() override;
-        /**
-         * constructor.
-         */
-        AddMovieRequest() = delete;
+
+        AddMovieRequest();
 
         explicit AddMovieRequest(const vector<string>& args);
 };

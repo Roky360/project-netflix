@@ -3,13 +3,14 @@
 
 using namespace std;
 
-HelpRequest::HelpRequest(const vector<string> &args) : Request(args) {
-}
+HelpRequest::HelpRequest(const vector<string> &args) : Request(args) {}
+
+HelpRequest::HelpRequest() :Request() {}
 
 Response *HelpRequest::execute() {
     // if the user entered arguments - return invalid request.
     if (!args.empty()) {
-        return new Response(INVALID_ARG, "invalid arg.");
+        return new Response(INVALID_ARG, "invalid arguments.");
     }
 
     // the menu

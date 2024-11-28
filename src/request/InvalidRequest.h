@@ -5,17 +5,13 @@
 class InvalidRequest: public Request {
 
     public:
-        InvalidRequest();
-
-/**
+        /**
          * return new invalid request response
          * @return
          */
         Response* execute() override;
-        /**
-         * default constructor
-         */
-        //InvalidRequest() = default;
+
+        InvalidRequest();
 };
 
 

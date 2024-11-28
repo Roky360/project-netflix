@@ -21,3 +21,5 @@ Request* Request::fromName(const string& reqName, vector<string> args) {
     // return the wanted request
     return map[reqName](args);
 }
+
+Request::Request() : args({}) {}

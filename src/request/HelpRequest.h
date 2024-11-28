@@ -12,10 +12,7 @@ public:
      */
     Response *execute() override;
 
-    /**
-     * default constructor.
-     */
-    HelpRequest() = delete;
+    HelpRequest();
 
     explicit HelpRequest(const vector<string>& args);
 };

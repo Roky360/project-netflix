@@ -11,6 +11,8 @@ public:
 
     explicit Request(const vector<string> &args) : args(args) {}
 
+    Request();
+
     virtual ~Request() = default;
 
     /**

@@ -22,10 +22,14 @@ string readDbFile() {
 
 /// A helper function that returns a string representation of an int array.
 string intArrToString(const vector<int> &arr) {
-    string s;
+    string s = "[";
     for (auto elem: arr) {
         s += to_string(elem) + " ";
     }
+    if (s.length() == 1)
+        s += "]";
+    else
+        s = s.substr(0, s.length() - 1) + "]";
     return s;
 }
 
@@ -53,6 +57,22 @@ TEST(FilesDbTests, getUserMovies_SanityTest) {
     EXPECT_EQ(intArrToString(db->getUserMovies(1001)), intArrToString({}));
 
     EXPECT_EQ(intArrToString(db->getAllUserIds()), intArrToString({105, 102, 104}));
+
+    delete db;
+}
+
+TEST(FilesDbTests, userMethods_SanityTest) {
+    auto *db = new FilesDatabase();
+
+    EXPECT_EQ(db->getAllUserIds(), (vector<int>){});
+
+    db->addMovieToUser(1, 101);
+    db->addMovieToUser(1, 101);
+    db->addMovieToUser(1, 102);
+    db->addMovieToUser(3, 103);
+    db->addMovieToUser(2, 103);
+
+    EXPECT_EQ(db->getAllUserIds(), vector<int>({2,3,1}));
 
     delete db;
 }

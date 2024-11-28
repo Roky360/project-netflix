@@ -1,7 +1,7 @@
 #ifndef PROJECT_NETFLIX_REQUESTPROVIDER_H
 #define PROJECT_NETFLIX_REQUESTPROVIDER_H
 
-#include "../Request/Request.h"
+#include "../request/Request.h"
 
 class RequestProvider {
 

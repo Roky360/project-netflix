@@ -1,9 +1,9 @@
 #include <iostream>
 #include "App.h"
 #include "StateManager.h"
-#include "../Request/Response.h"
-#include "../Request/Request.h"
-#include "../Request_Provider/RequestProvider.h"
+#include "../request/Response.h"
+#include "../request/Request.h"
+#include "../request_Provider/RequestProvider.h"
 
 namespace app {
     void App::run() {

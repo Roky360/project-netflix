@@ -1,7 +1,7 @@
 #ifndef PROJECT_NETFLIX_CLIREQUESTPROVIDER_H
 #define PROJECT_NETFLIX_CLIREQUESTPROVIDER_H
 #include "RequestProvider.h"
-#include "../Request/Request.h"
+#include "../request/Request.h"
 
 
 class CliRequestProvider : public RequestProvider {

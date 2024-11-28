@@ -1,9 +1,16 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <direct.h>
 #include "FilesDatabase.h"
 #include "../utils/Utils.h"
+// include libraries to use mkdir method
+#ifdef _WIN32
+    #include <direct.h>  // Windows-specific
+    #define mkdir(path) _mkdir(path)
+#else
+    #include <sys/stat.h>  // Linux-specific
+    #define mkdir(path) mkdir(path, 0755)
+#endif
 
 using namespace utils;
 
@@ -87,6 +94,8 @@ namespace db {
             ostringstream oss;
             oss << userId << " " << movieId;
             fileLines.push_back(oss.str());
+            // add an entry to the map for the new user
+            this->uidToLineMap[userId] = fileLines.size() - 1;
         }
 
         // rewrite all lines to the file

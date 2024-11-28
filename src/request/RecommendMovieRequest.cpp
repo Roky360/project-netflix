@@ -1,5 +1,6 @@
 #include "RecommendMovieRequest.h"
 #include "../services/MoviesService.h"
+#include "../database/Database.h"
 #include <string>
 
 RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {
@@ -22,6 +23,17 @@ Response *RecommendMovieRequest::execute() {
         movieId = stoi(args[1]);
     } catch (...) {
         return new Response(INVALID_ARG, "User ID and Movie ID must be numbers.");
+    }
+
+    // get the data base to check if the user exist
+    Database* db = StateManager::getInstance()->getDb();
+
+    // get the users ID
+    vector<int> usersId = db->getAllUserIds();
+
+    // if the user is not exist
+    if(find(usersId.begin(), usersId.end(), userId) == usersId.end()) {
+        return new Response(INVALID_ARG, "The user doesnt exist.");
     }
 
     // call recommend movies from the service and get the movies

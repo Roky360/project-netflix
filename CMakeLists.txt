@@ -38,14 +38,26 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 # Add test executable
-add_executable(MyTests tests/my_tests.cpp
-        src/request/AddMovieRequest.cpp
+add_executable(MyTests #tests/my_tests.cpp
         src/request/AddMovieRequest.h
+        src/request/AddMovieRequest.cpp
+        src/request/RecommendMovieRequest.cpp
+        src/request/RecommendMovieRequest.h
+        src/request/HelpRequest.cpp
+        src/request/InvalidRequest.cpp
+        src/request/Request.cpp
+        src/request_Provider/CliRequestProvider.cpp
         src/database/Database.h
         src/database/FilesDatabase.cpp
         src/database/FilesDatabase.h
         src/utils/Utils.cpp
-        src/utils/Utils.h)
+        src/utils/Utils.h
+        src/services/MoviesService.cpp
+        src/services/MoviesService.h
+        src/app/StateManager.cpp
+        src/app/App.cpp
+        tests/recommendation_algo_tests.cpp
+        )
 
 # Link GTest and pthread for tests
 target_link_libraries(MyTests gtest gtest_main pthread)

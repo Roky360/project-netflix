@@ -1,49 +1,34 @@
 FROM gcc:latest
 LABEL authors="Eden Kfir Avi"
-LABEL version="0.1"
+LABEL version="0.2"
 
 ARG CMAKE_VER=3.27.8
 ARG BUILD_TESTS=OFF
 
 # Install dependencies
-# Update and install required packages
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    wget \
-    libssl-dev && \
-    apt-get clean
-
-# Install CMake 3.27.8
-RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-linux-x86_64.sh \
-    && chmod +x cmake-3.27.8-linux-x86_64.sh \
-    && ./cmake-3.27.8-linux-x86_64.sh --skip-license --prefix=/usr/local \
-    && rm cmake-3.27.8-linux-x86_64.sh
-#RUN apt-get update && apt-get install -y \
-#    cmake \
-#    make
-#    g++ \
-#    git \
-#    libgtest-dev
+RUN apt-get update && apt-get install -y cmake
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the project files into the container
+# Copy the project files and tests
 COPY CMakeLists.txt .
 COPY src/ src/
+COPY tests/ tests/
 
 # Build the project
-#RUN mkdir build && cd build && \
-#    cmake -DCMAKE_VER=${CMAKE_VER} -DBUILD_TESTS=${BUILD_TESTS} ..
-##    cmake --build . \
-#RUN cmake --build .
-
 RUN mkdir -p build && cd build && \
-    cmake -DBUILD_TESTS=${BUILD_TESTS} ..
-RUN cmake --build .
-#    cmake --build ..
-#RUN ls -l
-#RUN chmod +x ./build/project_netflix
+    cmake -DBUILD_TESTS=${BUILD_TESTS} .. && make
 
 # Set the default command to run the main executable
 CMD ["./build/project_netflix"]
+
+# tree:
+# app/
+#   build/
+#   src/
+#   tests/
+#   - CMakeLists.txt
+#   CMakeLists.txt
+# data/ data.db
+#

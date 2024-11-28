@@ -6,7 +6,9 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_TESTS: "OFF"
-    command: ./build/project_netflix
+    stdin_open: true    # add stdin to the container
+    tty: true
+    command: ./build/project_netflix  # executable is located here
 
   # Run tests
   test:
@@ -15,4 +17,4 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_TESTS: "ON"
-    command: ./build/unit_tests
+    command: ./build/tests/unit_tests  # executable is located here

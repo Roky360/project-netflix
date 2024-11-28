@@ -2,6 +2,9 @@
 #include "../src/request_Provider/RequestProvider.h"
 #include "../src/request_Provider/CliRequestProvider.h"
 #include "../src/database/FilesDatabase.h"
+#include "../src/request/HelpRequest.h"
+#include "../src/request/AddMovieRequest.h"
+#include "../src/app/StateManager.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -10,6 +13,7 @@
 
 using namespace db;
 using namespace std;
+using namespace app;
 
 /// A helper function that reads the db file contents to compare output in the tests.
 string readDbFile() {
@@ -26,49 +30,57 @@ string readDbFile() {
 }
 
 // test ask for help request
-TEST(FilesDbTests, helpRequest_sanityTest) {
+TEST(Request, helpRequest_sanityTest) {
 
-    string inputStr = "help\n";
+    // create new help request
+    Request* helpReq1 = new HelpRequest();
 
-    istringstream input(inputStr);
+    // execute and get the response
+    Response* res1 = helpReq1->execute();
 
-    cin.rdbuf(input.rdbuf());
+    // check the response
+    EXPECT_EQ(res1->payload, "add [userid] [movieid1] [movieid2]...\nrecommand [userid] [movieid]\nhelp");
 
-    RequestProvider* rp = new CliRequestProvider();
-    Request* rq = rp->nextRequest();
+    vector<string> vec = {"i cant", "be here"};
 
-    ASSERT_NE(rq, nullptr);
+    // create new help request - with arguments
+    Request* helpReq2 = new HelpRequest(vec);
 
-    Response* res = rq->execute();
+    // execute and get the response
+    Response* res2 = helpReq2->execute();
 
-    ASSERT_NE(res, nullptr);
-
-    EXPECT_EQ(res->payload, "add [userid] [movieid1] [movieid2]...\nrecommand [userid] [movieid]\nhelp\n");
-
-    delete rp;
-    delete rq;
-    delete res;
+    // check the response
+    EXPECT_EQ(res2->status, INVALID_ARG);
 }
 
 // test add request
-TEST(FilesDbTests, addMovieRequest_sanityTest) {
+TEST(Request, addMovieRequest_sanityTest) {
 
-    string inputStr1 = "add 1 100 101 102 105\n";
-    string inputStr1File = "1 100 101 102 105";
+    // create add movie request with no arguments
+    Request* addReq1 = new AddMovieRequest();
+    Response* res1 = addReq1->execute();
+    EXPECT_EQ(res1->status, INVALID_ARG);
 
-    istringstream input(inputStr1);
+    // create new add request with arguments
+    vector<string> args = {"1", "100", "101", "102", "103"};
+    string stringArgs = "1 100 101 102 103";
+    Request* addReq2 = new AddMovieRequest(args);
+    Response* res2 = addReq2->execute();
 
-    cin.rdbuf(input.rdbuf());
-
-    RequestProvider* rp = new CliRequestProvider();
-    Request* rq = rp->nextRequest();
-
-    Response* res = rq->execute();
-
+    // get the file context
     string fileStr = readDbFile();
 
-    EXPECT_EQ(res->status, OK);
-    EXPECT_EQ(fileStr, inputStr1File);
+    // check
+    EXPECT_EQ(res2->status, OK);
+    EXPECT_EQ(fileStr, stringArgs);
 }
+
+int main() {
+    auto *sm = StateManager::getInstance();
+    sm->setDb(new FilesDatabase());
+    ::testing::InitGoogleTest();
+    return RUN_ALL_TESTS();
+}
+
 
 

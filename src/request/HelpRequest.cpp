@@ -9,14 +9,12 @@ HelpRequest::HelpRequest(const vector<string> &args) : Request(args) {
 Response *HelpRequest::execute() {
     // if the user entered arguments - return invalid request.
     if (!args.empty()) {
-        return new Response(INVALID_REQUEST, "invalid request.");
+        return new Response(INVALID_ARG, "invalid arg.");
     }
 
-    // print the menu
-    cout << "add [userid] [movieid1] [movieid2]..." << endl;
-    cout << "recommand [userid] [movieid]" << endl;
-    cout << "help" << endl;
+    // the menu
+    string menu = "add [userid] [movieid1] [movieid2]...\nrecommand [userid] [movieid]\nhelp";
 
     // return the response
-    return new Response();
+    return new Response(OK, "", menu);
 }

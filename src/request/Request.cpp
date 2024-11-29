@@ -1,12 +1,11 @@
 #include "Request.h"
-#include "HelpRequest.h"
-#include "InvalidRequest.h"
+#include "invalid_request/InvalidRequest.h"
 #include "../app/StateManager.h"
 #include <map>
 
 using namespace app;
 
-Request* Request::fromName(const string& reqName, vector<string> args) {
+Request *Request::fromName(const string &reqName, vector<string> args) {
     // get the state manager
     auto manager = StateManager::getInstance();
 
@@ -14,7 +13,7 @@ Request* Request::fromName(const string& reqName, vector<string> args) {
     auto map = manager->getRequestMap();
 
     // if he didn't find the request
-    if (map.find(reqName) == map.end())  {
+    if (map.find(reqName) == map.end()) {
         return new InvalidRequest();
     }
 
@@ -22,4 +21,5 @@ Request* Request::fromName(const string& reqName, vector<string> args) {
     return map[reqName](args);
 }
 
-Request::Request() : args({}) {}
+Request::Request() : args({}) {
+}

@@ -1,8 +1,8 @@
 FROM gcc:latest
 LABEL authors="Eden Kfir Avi"
-LABEL version="0.2"
+LABEL version="0.3"
 
-ARG CMAKE_VER=3.27.8
+ARG CMAKE_VER=3.25.1
 ARG BUILD_TESTS=OFF
 
 # Install dependencies
@@ -18,17 +18,7 @@ COPY tests/ tests/
 
 # Build the project
 RUN mkdir -p build && cd build && \
-    cmake -DBUILD_TESTS=${BUILD_TESTS} .. && make
+    cmake -DCMAKE_VER=${CMAKE_VER} -DBUILD_TESTS=${BUILD_TESTS} .. && make
 
 # Set the default command to run the main executable
 CMD ["./build/project_netflix"]
-
-# tree:
-# app/
-#   build/
-#   src/
-#   tests/
-#   - CMakeLists.txt
-#   CMakeLists.txt
-# data/ data.db
-#

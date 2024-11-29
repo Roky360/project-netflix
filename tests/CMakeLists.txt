@@ -11,9 +11,11 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 # Add test executable
-file(GLOB TEST_SOURCES CONFIGURE_DEPENDS "*.cpp")
+file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.h" "*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp") # remove the main so the tests' main will be executed
-add_executable(unit_tests ${SOURCES} ${TEST_SOURCES})
+add_executable(unit_tests ${SOURCES} ${TEST_SOURCES}
+        utils/TestUtils.cpp
+        utils/TestUtils.h)
 
 # Link GTest and pthread for tests
 target_link_libraries(unit_tests gtest gtest_main pthread)

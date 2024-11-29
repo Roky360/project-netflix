@@ -1,13 +1,13 @@
 #include "CliRequestProvider.h"
-#include "../request/Request.h"
+#include "../../request/Request.h"
 #include <string>
 #include <vector>
 #include <iostream>
 #include <sstream>
+
 using namespace std;
 
-Request* CliRequestProvider:: nextRequest() {
-
+Request *CliRequestProvider::nextRequest() {
     vector<string> args; // holds the arguments of the request
     string str; // hold the input from the user
     string reqName; // holds the request name

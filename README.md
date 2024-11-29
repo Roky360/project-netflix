@@ -4,6 +4,8 @@ _Avi Ben David, Kfir Eitan, Eden Shaked_
 
 Advanced Programming project - Netflix App.
 
+###### _(UML below)_
+
 ## Important Links
 
 - [GitHub (This repo)](https://github.com/Roky360/project-netflix)
@@ -71,6 +73,15 @@ Right now, the server supports these commands:
 
   > **help**
 
+---
+
+## UML
+
+Here is a UML class diagram of the server.
+
+![Backend UML](assets/backend-uml.jpg)
+
+---
 
 
 

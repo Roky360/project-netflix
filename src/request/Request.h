@@ -1,5 +1,6 @@
 #ifndef PROJECT_NETFLIX_REQUEST_H
 #define PROJECT_NETFLIX_REQUEST_H
+
 #include "Response.h"
 #include <string>
 #include <vector>
@@ -9,7 +10,8 @@ public:
     // the arguments of the request
     vector<string> args;
 
-    explicit Request(const vector<string> &args) : args(args) {}
+    explicit Request(const vector<string> &args) : args(args) {
+    }
 
     Request();
 

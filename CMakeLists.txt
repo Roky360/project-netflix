@@ -15,6 +15,6 @@ add_executable(project_netflix ${SOURCES})
 
 # If tests are enabled, include cmake file for tests
 option(BUILD_TESTS "Build gtest tests" OFF)
-if (BUILD_TESTS)
+if ("${BUILD_TESTS}" STREQUAL "ON")
     add_subdirectory(tests)
 endif ()

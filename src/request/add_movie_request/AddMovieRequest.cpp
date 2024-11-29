@@ -1,14 +1,16 @@
 #include "AddMovieRequest.h"
-#include "../services/MoviesService.h"
+#include "../../services/MoviesService.h"
 #include <string>
 
-AddMovieRequest::AddMovieRequest(const vector<string>& args) : Request(args) {}
+AddMovieRequest::AddMovieRequest(const vector<string> &args) : Request(args) {
+}
 
-AddMovieRequest::AddMovieRequest() :Request() {}
+AddMovieRequest::AddMovieRequest() : Request() {
+}
 
-Response* AddMovieRequest::execute() {
+Response *AddMovieRequest::execute() {
     // get the move service instance
-    MoviesService* service = MoviesService::getInstance();
+    MoviesService *service = MoviesService::getInstance();
 
     // if the user didnt entered enough arguments.
     if (args.size() <= 1) {

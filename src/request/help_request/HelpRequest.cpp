@@ -1,11 +1,12 @@
 #include "HelpRequest.h"
-#include <iostream>
 
 using namespace std;
 
-HelpRequest::HelpRequest(const vector<string> &args) : Request(args) {}
+HelpRequest::HelpRequest(const vector<string> &args) : Request(args) {
+}
 
-HelpRequest::HelpRequest() :Request() {}
+HelpRequest::HelpRequest() : Request() {
+}
 
 Response *HelpRequest::execute() {
     // if the user entered arguments - return invalid request.

@@ -1,20 +1,22 @@
 #ifndef PROJECT_NETFLIX_HELPREQUEST_H
 #define PROJECT_NETFLIX_HELPREQUEST_H
-#include "Request.h"
-#include <string>
-#include <iostream>
 
+#include "../Request.h"
+
+/**
+ * Provides an explanation about all the supported commands.
+ */
 class HelpRequest : public Request {
 public:
+    HelpRequest();
+
+    explicit HelpRequest(const vector<string> &args);
+
     /**
      * execute the help request - print the menu
      * @return response
      */
     Response *execute() override;
-
-    HelpRequest();
-
-    explicit HelpRequest(const vector<string>& args);
 };
 
 

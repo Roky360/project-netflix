@@ -1,34 +1,9 @@
+#ifndef RECOMMENDATION_ALGO_TESTS_H
+#define RECOMMENDATION_ALGO_TESTS_H
+
 #include <gtest/gtest.h>
-#include "../src/database/FilesDatabase.h"
 #include "../src/services/MoviesService.h"
-#include "../src/request/AddMovieRequest.h"
-#include <string>
-#include <fstream>
-
-using namespace db;
-using namespace std;
-
-// A helper function that reads the db file contents to compare output in the tests.
-string readDbFile() {
-    ifstream f(FilesDatabase::DB_FILE_PATH);
-    stringstream buff;
-    string line;
-    if (!f.good())
-        return "";
-    while (getline(f, line)) {
-        buff << line << '\n';
-    }
-    string contents = buff.str();
-    return contents.substr(0, contents.length() - 1);
-}
-
-string intArrToString(const vector<int> &arr) {
-    string s;
-    for (auto elem: arr) {
-        s += to_string(elem) + " ";
-    }
-    return s;
-}
+#include "../src/request/add_movie_request/AddMovieRequest.h"
 
 
 TEST(recommendation_algo_tests, recommendMovies_Final) {
@@ -75,11 +50,9 @@ TEST(recommendation_algo_tests, recommendMovies_Final) {
     vector<int> recResults3 = ms->recommendMovies(7, 116);
     vector<int> actResults3 = {100};
     EXPECT_EQ(recResults3, actResults3);
+
+    // cleanup the created db file
+    remove(FilesDatabase::DB_FILE_PATH.c_str());
 }
 
-int main() {
-    auto *sm = StateManager::getInstance();
-    sm->setDb(new FilesDatabase());
-    ::testing::InitGoogleTest();
-    return RUN_ALL_TESTS();
-}
+#endif

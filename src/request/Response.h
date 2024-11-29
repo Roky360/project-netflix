@@ -4,26 +4,30 @@
 using namespace std;
 
 enum Status {
-    OK,                 // value 0
-    INVALID_ARG,        // value 1
-    ERROR,              // value 2
-    INVALID_REQUEST     // value 3
+    OK,             // value 0
+    INVALID_ARG,    // value 1
+    ERROR,          // value 2
+    INVALID_REQUEST // value 3
 };
 
-/// response object that contains the result of request
+/**
+ * Response object that contains the result of a request.
+ */
 class Response {
-    public:
-        // fields
-        Status status;
-        string errorMsg;
-        string payload;
+public:
+    // fields
+    Status status;
+    string errorMsg;
+    string payload;
 
-        // default constructor
-        Response() : status(OK), errorMsg(""), payload("") {}
+    // default constructor
+    Response() : status(OK), errorMsg(""), payload("") {
+    }
 
-        // constructor
-        Response(Status s, const string& error = "", const string& payload = "") :
-            status(s), errorMsg(error), payload(payload) {}
+    // constructor
+    Response(Status s, const string &error = "", const string &payload = "") : status(s), errorMsg(error),
+                                                                               payload(payload) {
+    }
 };
 
 

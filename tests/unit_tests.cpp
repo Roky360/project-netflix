@@ -1,30 +1,26 @@
-#include "app/App.h"
-#include "app/StateManager.h"
-#include "database/FilesDatabase.h"
-#include "request_provider/cli_provider/CliRequestProvider.h"
-#include "request/all_requests.h"
+#include <gtest/gtest.h>
+
+#include "general_tests.h"
+#include "files_db_tests.h"
+#include "recommendation_algo_tests.h"
+
+#include "../src/app/StateManager.h"
+#include "../src/database/FilesDatabase.h"
 
 using namespace app;
 using namespace db;
 
-int main() {
-    // initialize supported requests map
+int main(int argc, char **argv) {
     const unordered_map<string, requestGen> requestMap = {
         {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
         {"recommend", [](auto args) -> Request *{ return new RecommendMovieRequest(args); }},
         {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
     };
-    // Initialize app state
+    // init state manager with necessary data
     auto *sm = StateManager::getInstance();
     sm->setDb(new FilesDatabase());
     sm->setRequestMap(requestMap);
-    sm->setRequestProvider(new CliRequestProvider());
 
-    // Run app
-    auto *app = new App();
-    app->run();
-
-    delete app;
-    delete sm;
-    return 0;
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

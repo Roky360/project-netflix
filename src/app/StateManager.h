@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include "../database/Database.h"
 #include "../request/Request.h"
@@ -22,7 +23,7 @@ namespace app {
     private:
         static StateManager *instance;
         Database *db{};
-        map<string, requestGen> mapRequest;
+        unordered_map<string, requestGen> mapRequest;
         RequestProvider *rp{};
 
         StateManager() = default;
@@ -70,13 +71,13 @@ namespace app {
          * RequestMap Getter
          * @return RequestMap
          */
-        map<string, requestGen> getRequestMap();
+        unordered_map<string, requestGen> getRequestMap();
 
         /**
          * RequestMap Setter
          * @param reqMap RequestMap
          */
-        void setRequestMap(map<string, requestGen> reqMap);
+        void setRequestMap(unordered_map<string, requestGen> reqMap);
     };
 }
 

@@ -1,0 +1,20 @@
+services:
+  # Run main application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_TESTS: "OFF"
+    stdin_open: true                  # enable stdin to the container
+    tty: true
+    command: ./build/project_netflix  # executable is located here
+
+  # Run tests
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_TESTS: "ON"
+    command: ./build/tests/unit_tests  # executable is located here

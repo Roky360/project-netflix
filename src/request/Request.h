@@ -1,5 +1,6 @@
 #ifndef PROJECT_NETFLIX_REQUEST_H
 #define PROJECT_NETFLIX_REQUEST_H
+
 #include "Response.h"
 #include <string>
 #include <vector>
@@ -9,11 +10,19 @@ public:
     // the arguments of the request
     vector<string> args;
 
-    explicit Request(const vector<string> &args) : args(args) {}
+    explicit Request(const vector<string> &args) : args(args) {
+    }
 
     Request();
 
     virtual ~Request() = default;
+
+    /**
+     * Returns a help message that describes how to use this command.
+     * A help request should display the help messages of all available commands.
+     * @return A help message describing how to use this command.
+     */
+    virtual string getHelpMsg() = 0;
 
     /**
      * execute the wanted action

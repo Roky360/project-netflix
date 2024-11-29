@@ -2,8 +2,7 @@
 #include "Response.h"
 #include <iostream>
 
-InvalidRequest::InvalidRequest() : Request({}) {
-}
+InvalidRequest::InvalidRequest() : Request() {}
 
 Response* InvalidRequest::execute() {
     // create new invalid request response and return it

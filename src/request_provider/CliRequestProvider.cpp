@@ -1,6 +1,5 @@
 #include "CliRequestProvider.h"
-#include "../Request/Request.h"
-#include "../Request/InvalidRequest.h"
+#include "../request/Request.h"
 #include <string>
 #include <vector>
 #include <iostream>

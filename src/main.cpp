@@ -9,10 +9,10 @@ using namespace db;
 
 int main() {
     // initialize supported requests map
-    const map<string, requestGen> requestMap = {
-        {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
-        {"recommend", [](auto args) -> Request *{ return new RecommendMovieRequest(args); }},
+    const unordered_map<string, requestGen> requestMap = {
         {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
+        {"recommend", [](auto args) -> Request *{ return new RecommendMovieRequest(args); }},
+        {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
     };
     // Initialize app state
     auto *sm = StateManager::getInstance();

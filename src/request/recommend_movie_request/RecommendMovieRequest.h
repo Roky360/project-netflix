@@ -9,15 +9,17 @@
  */
 class RecommendMovieRequest : public Request {
 public:
-    /**
-     * execute the recommend functio
-     * @return response with the recommended movies
-     */
-    Response *execute();
-
     RecommendMovieRequest();
 
     explicit RecommendMovieRequest(const vector<string> &args);
+
+    string getHelpMsg() override;
+
+    /**
+     * execute the recommend function
+     * @return response with the recommended movies
+     */
+    Response *execute() override;
 };
 
 

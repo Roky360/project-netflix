@@ -5,6 +5,10 @@
 RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {
 }
 
+string RecommendMovieRequest::getHelpMsg() {
+    return "recommand [userid] [movieid]";
+}
+
 RecommendMovieRequest::RecommendMovieRequest() : Request() {
 }
 

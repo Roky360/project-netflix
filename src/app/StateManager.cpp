@@ -1,5 +1,7 @@
 #include "StateManager.h"
 
+#include <unordered_map>
+
 namespace app {
     StateManager *StateManager::instance = nullptr;
 
@@ -31,15 +33,11 @@ namespace app {
         this->rp = rp;
     }
 
-    map<string, requestGen> StateManager::getRequestMap() {
+    unordered_map<string, requestGen> StateManager::getRequestMap() {
         return mapRequest;
     }
 
-    void StateManager::setRequestMap(map<string, requestGen> reqMap) {
+    void StateManager::setRequestMap(unordered_map<string, requestGen> reqMap) {
         mapRequest = std::move(reqMap);
     }
 }
-
-#include "StateManager.h"
-
-#include <utility>

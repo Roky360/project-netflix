@@ -17,7 +17,7 @@ TEST(Request, helpRequest_sanityTest) {
     Response *res1 = helpReq1->execute();
 
     // check the response
-    EXPECT_EQ(res1->payload, "add [userid] [movieid1] [movieid2]...\nrecommand [userid] [movieid]\nhelp");
+    EXPECT_EQ(res1->payload, "add [userid] [movieid1] [movieid2] ...\nrecommand [userid] [movieid]\nhelp");
 
     vector<string> vec = {"i cant", "be here"};
 

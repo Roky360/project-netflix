@@ -12,6 +12,8 @@ public:
 
     explicit HelpRequest(const vector<string> &args);
 
+    string getHelpMsg() override;
+
     /**
      * execute the help request - print the menu
      * @return response

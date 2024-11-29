@@ -4,9 +4,13 @@
 InvalidRequest::InvalidRequest() : Request() {
 }
 
+string InvalidRequest::getHelpMsg() {
+    return "";
+}
+
 Response *InvalidRequest::execute() {
     // create new invalid request response and return it
-    Response *response = new Response(INVALID_REQUEST, "invalid request.");
+    auto *response = new Response(INVALID_REQUEST, "invalid request.");
 
     return response;
 };

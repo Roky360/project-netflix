@@ -14,6 +14,8 @@ public:
 
     explicit AddMovieRequest(const vector<string> &args);
 
+    string getHelpMsg() override;
+
     /**
      * add movies to the user, in the database
      * @return response

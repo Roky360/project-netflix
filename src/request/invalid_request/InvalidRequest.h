@@ -10,6 +10,8 @@ class InvalidRequest : public Request {
 public:
     InvalidRequest();
 
+    string getHelpMsg() override;
+
     /**
      * return new invalid request response
      * @return

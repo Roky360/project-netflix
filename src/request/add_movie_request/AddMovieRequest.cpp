@@ -8,6 +8,10 @@ AddMovieRequest::AddMovieRequest(const vector<string> &args) : Request(args) {
 AddMovieRequest::AddMovieRequest() : Request() {
 }
 
+string AddMovieRequest::getHelpMsg() {
+    return "add [userid] [movieid1] [movieid2] ...";
+}
+
 Response *AddMovieRequest::execute() {
     // get the move service instance
     MoviesService *service = MoviesService::getInstance();

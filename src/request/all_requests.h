@@ -2,8 +2,8 @@
 #ifndef ALL_REQUESTS_H
 #define ALL_REQUESTS_H
 
-#include "request.h"
-#include "response.h"
+#include "Request.h"
+#include "Response.h"
 
 #include "invalid_request/InvalidRequest.h"
 #include "add_movie_request/AddMovieRequest.h"

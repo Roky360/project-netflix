@@ -5,6 +5,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "PermissionManager.h"
 #include "../database/Database.h"
 #include "../request/Request.h"
 #include "../request_provider/RequestProvider.h"
@@ -20,7 +22,6 @@ namespace app {
     * Holding important info such as the database or requests.
     */
     class StateManager {
-    private:
         static StateManager *instance;
         Database *db{};
         unordered_map<string, requestGen> mapRequest;

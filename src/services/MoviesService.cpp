@@ -8,8 +8,14 @@
 MoviesService *MoviesService::instance = nullptr;
 
 MoviesService *MoviesService::getInstance() {
+    // thread-safely for accessing the singleton instance
     if (instance == nullptr) {
-        instance = new MoviesService();
+        auto *pm = PermissionManager::getInstance();
+        pm->requestWrite();
+        if (instance == nullptr) {
+            instance = new MoviesService();
+        }
+        pm->unlock();
     }
     return instance;
 }
@@ -21,12 +27,11 @@ void MoviesService::addMovieToUser(int userID, int movieID) {
 }
 
 vector<int> MoviesService::recommendMovies(int userID, int movieID) {
-
     vector<int> users = MoviesService::getComparableUsers(userID, movieID);
     vector<int> ranks = MoviesService::rankComparableUsers(userID, &users);
     map<int, int> movieMap = mapComparableMovies(userID, movieID, &users, &ranks);
     // Sets a vector to store all the possible movies we found (first) and their respective ranks (second)
-    vector<pair<int, int>> pairs(movieMap.begin(), movieMap.end());
+    vector<pair<int, int> > pairs(movieMap.begin(), movieMap.end());
     //Lambda function to sort the vector
     std::sort(pairs.begin(), pairs.end(), [](const auto &a, const auto &b) {
         //Sorts them by the value of the "ranks" of the movies, their recommendation scores
@@ -39,8 +44,9 @@ vector<int> MoviesService::recommendMovies(int userID, int movieID) {
     //The vector we will return, including the top results for our recommendation
     vector<int> topTen;
     //The minimum between the number 10 and the number of fitting movies
-    int mini = min(MOVIE_RECOMMENDATION_COUNT, (int) pairs.size());
+    int mini = min(MOVIE_RECOMMENDATION_COUNT, static_cast<int>(pairs.size()));
     //Pushes the movies (stored in first) into the return vector
+    topTen.reserve(mini);
     for (int i = 0; i < mini; ++i) {
         topTen.push_back(pairs[i].first);
     }
@@ -105,8 +111,8 @@ map<int, int> MoviesService::mapComparableMovies(int userID, int movieID, vector
             if (movieMap.find(j) == movieMap.end()) {
                 movieMap.emplace(j, ranks->at(k));
             }
-                //Otherwise, meaning both that the OG user hasn't watched it, and it is already somewhere in the map
-                //We will add to its recommendation value the user's rank
+            //Otherwise, meaning both that the OG user hasn't watched it, and it is already somewhere in the map
+            //We will add to its recommendation value the user's rank
             else {
                 movieMap[j] += ranks->at(k);
             }
@@ -115,5 +121,3 @@ map<int, int> MoviesService::mapComparableMovies(int userID, int movieID, vector
     }
     return movieMap;
 }
-
-

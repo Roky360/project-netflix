@@ -11,8 +11,14 @@ namespace app {
     }
 
     StateManager *StateManager::getInstance() {
+        // thread-safely for accessing the singleton instance
         if (instance == nullptr) {
-            instance = new StateManager();
+            auto *pm = PermissionManager::getInstance();
+            pm->requestWrite();
+            if (instance == nullptr) {
+                instance = new StateManager();
+            }
+            pm->unlock();
         }
         return instance;
     }

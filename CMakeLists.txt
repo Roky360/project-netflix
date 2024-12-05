@@ -7,7 +7,7 @@ endif ()
 cmake_minimum_required(VERSION ${CMAKE_VER})
 
 project(project_netflix)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 # Add executable with all source files under `src`
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.h" "src/*.cpp")

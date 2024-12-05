@@ -2,6 +2,8 @@
 #include <sstream>
 #include <algorithm>
 #include "FilesDatabase.h"
+
+#include "../app/PermissionManager.h"
 #include "../utils/Utils.h"
 // include libraries to use mkdir method
 #ifdef _WIN32
@@ -13,6 +15,7 @@
 #endif
 
 using namespace utils;
+using namespace app;
 
 namespace db {
     const string FilesDatabase::DB_DIRECTORY = "../data";
@@ -49,6 +52,8 @@ namespace db {
     }
 
     void FilesDatabase::addMovieToUser(int userId, int movieId) {
+        PermissionManager::getInstance()->requestWrite();
+
         ifstream inputFile(DB_FILE_PATH);
         vector<string> fileLines; // holds all the lines including the updated line, to be rewritten back to the db file
         string line;
@@ -104,9 +109,13 @@ namespace db {
             outputFile << l << "\n";
         }
         outputFile.close();
+
+        PermissionManager::getInstance()->unlock();
     }
 
     vector<int> FilesDatabase::getUserMovies(const int userId) {
+        PermissionManager::getInstance()->requestRead();
+
         // user id does not exist - return empty array
         if (this->uidToLineMap.find(userId) == this->uidToLineMap.end()) {
             return {};
@@ -133,21 +142,29 @@ namespace db {
             movieIds.push_back(stoi(id));
         }
 
+        PermissionManager::getInstance()->unlock();
         return movieIds;
     }
 
     vector<int> FilesDatabase::getAllUserIds() {
+        PermissionManager::getInstance()->requestRead();
+
         vector<int> userIds;
         userIds.reserve(this->uidToLineMap.size());
         // iterate over the map and extract the keys which are the user IDs
         for (auto item: this->uidToLineMap) {
             userIds.push_back(item.first);
         }
+
+        PermissionManager::getInstance()->unlock();
         return userIds;
     }
 
     int FilesDatabase::getUserCount() {
-        return this->uidToLineMap.size();
+        PermissionManager::getInstance()->requestRead();
+        const int count = this->uidToLineMap.size();
+        PermissionManager::getInstance()->unlock();
+        return count;
     }
 
     bool FilesDatabase::userHasMovie(const int userId, const int movieId) {

@@ -1,18 +1,17 @@
-#include "RecommendMovieRequest.h"
+#include "GetMovieRequest.h"
 #include "../../services/MoviesService.h"
 #include "../../database/Database.h"
 
-RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args, ClientContext* cl) : Request(args, cl) {
+GetMovieRequest::GetMovieRequest(const vector<string> &args, ClientContext* cl) : Request(args, cl) {
 }
 
-string RecommendMovieRequest::getHelpMsg() {
+string GetMovieRequest::getHelpMsg() {
     return "GET, arguments: [userid] [movieid]";
 }
 
-RecommendMovieRequest::RecommendMovieRequest() : Request() {
-}
+GetMovieRequest::GetMovieRequest() : Request() {}
 
-Response *RecommendMovieRequest::execute() {
+Response *GetMovieRequest::execute() {
     // get the movie service instance
     MoviesService *service = MoviesService::getInstance();
 

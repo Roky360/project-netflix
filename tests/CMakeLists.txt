@@ -13,9 +13,7 @@ enable_testing()
 # Add test executable
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.h" "*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp") # remove the main so the tests' main will be executed
-add_executable(unit_tests ${SOURCES} ${TEST_SOURCES}
-        utils/TestUtils.cpp
-        utils/TestUtils.h)
+add_executable(unit_tests ${SOURCES} ${TEST_SOURCES})
 
 # Link GTest and pthread for tests
 target_link_libraries(unit_tests gtest gtest_main pthread)

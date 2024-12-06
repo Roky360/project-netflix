@@ -3,8 +3,9 @@
 
 #include <map>
 #include <string>
-#include <unordered_map>
 #include <vector>
+
+#include "PermissionManager.h"
 #include "../database/Database.h"
 #include "../request/Request.h"
 #include "../request_provider/RequestProvider.h"
@@ -20,10 +21,10 @@ namespace app {
     * Holding important info such as the database or requests.
     */
     class StateManager {
-    private:
+        static bool initialized;
         static StateManager *instance;
         Database *db{};
-        unordered_map<string, requestGen> mapRequest;
+        map<string, requestGen> mapRequest;
         RequestProvider *rp{};
 
         StateManager() = default;
@@ -71,13 +72,13 @@ namespace app {
          * RequestMap Getter
          * @return RequestMap
          */
-        unordered_map<string, requestGen> getRequestMap();
+        map<string, requestGen> getRequestMap();
 
         /**
          * RequestMap Setter
          * @param reqMap RequestMap
          */
-        void setRequestMap(unordered_map<string, requestGen> reqMap);
+        void setRequestMap(map<string, requestGen> reqMap);
     };
 }
 

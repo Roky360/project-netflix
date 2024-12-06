@@ -2,8 +2,7 @@
 #include "../../services/MoviesService.h"
 #include <string>
 
-AddMovieRequest::AddMovieRequest(const vector<string> &args) : Request(args) {
-}
+AddMovieRequest::AddMovieRequest(const vector<string> &args, ClientContext* cl) : Request(args, cl) {}
 
 AddMovieRequest::AddMovieRequest() : Request() {
 }
@@ -18,7 +17,7 @@ Response *AddMovieRequest::execute() {
 
     // if the user didnt entered enough arguments.
     if (args.size() <= 1) {
-        return new Response(INVALID_ARG, "Not enough arguments.");
+        return new Response(BAD_REQUEST_400, this->context);
     }
 
     // get the user id from the arguments
@@ -26,7 +25,7 @@ Response *AddMovieRequest::execute() {
     try {
         userId = stoi(args[0]);
     } catch (...) {
-        return new Response(INVALID_ARG, "User ID must be numbers.");
+        return new Response(BAD_REQUEST_400, this->context);
     }
 
     // call add movie service for each movie
@@ -35,7 +34,7 @@ Response *AddMovieRequest::execute() {
         try {
             service->addMovieToUser(userId, stoi(args[i]));
         } catch (...) {
-            return new Response(INVALID_ARG, "Movie ID must be numbers.");
+            return new Response(BAD_REQUEST_400, this->context);
         }
     }
 

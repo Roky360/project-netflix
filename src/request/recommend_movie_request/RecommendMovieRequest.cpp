@@ -2,7 +2,7 @@
 #include "../../services/MoviesService.h"
 #include "../../database/Database.h"
 
-RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args) : Request(args) {
+RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args, ClientContext* cl) : Request(args, cl) {
 }
 
 string RecommendMovieRequest::getHelpMsg() {
@@ -16,10 +16,11 @@ Response *RecommendMovieRequest::execute() {
     // get the movie service instance
     MoviesService *service = MoviesService::getInstance();
 
+    // if the user entered another arguments
     if (args.size() > 2) {
-        return new Response(INVALID_ARG, "To much arguments entered.");
+        return new Response(BAD_REQUEST_400, this->context);
     } else if (args.size() < 2) {
-        return new Response(INVALID_ARG, "Did not entered enough arguments.");
+        return new Response(BAD_REQUEST_400, this->context);
     }
 
     // get the user id and the movie id and change it to integer
@@ -28,7 +29,7 @@ Response *RecommendMovieRequest::execute() {
         userId = stoi(args[0]);
         movieId = stoi(args[1]);
     } catch (...) {
-        return new Response(INVALID_ARG, "User ID and Movie ID must be numbers.");
+        return new Response(BAD_REQUEST_400, this->context);
     }
 
     // get the database to check if the user exist
@@ -39,7 +40,7 @@ Response *RecommendMovieRequest::execute() {
 
     // if the user is not exist
     if (find(usersId.begin(), usersId.end(), userId) == usersId.end()) {
-        return new Response(INVALID_ARG, "The user doesnt exist.");
+        return new Response(NOT_FOUND_404, this->context);
     }
 
     // call recommend movies from the service and get the movies
@@ -52,10 +53,10 @@ Response *RecommendMovieRequest::execute() {
         try {
             payload += to_string(recommended[i]) + " ";
         } catch (...) {
-            return new Response(ERROR);
+            return new Response(BAD_REQUEST_400, this->context);
         }
     }
 
     // return new response with the movies
-    return new Response(OK, "", payload);
+    return new Response(OK_200, this->context, payload);
 }

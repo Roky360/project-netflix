@@ -10,7 +10,5 @@ string InvalidRequest::getHelpMsg() {
 
 Response *InvalidRequest::execute() {
     // create new invalid request response and return it
-    auto *response = new Response(INVALID_REQUEST, "invalid request.");
-
-    return response;
+    return new Response(BAD_REQUEST_400, this->context);
 };

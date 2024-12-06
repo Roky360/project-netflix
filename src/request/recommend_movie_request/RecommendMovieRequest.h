@@ -11,7 +11,7 @@ class RecommendMovieRequest : public Request {
 public:
     RecommendMovieRequest();
 
-    explicit RecommendMovieRequest(const vector<string> &args);
+    explicit RecommendMovieRequest(const vector<string> &args, ClientContext* cl);
 
     string getHelpMsg() override;
 

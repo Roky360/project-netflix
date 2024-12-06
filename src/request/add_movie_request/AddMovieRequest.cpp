@@ -8,7 +8,7 @@ AddMovieRequest::AddMovieRequest() : Request() {
 }
 
 string AddMovieRequest::getHelpMsg() {
-    return "add [userid] [movieid1] [movieid2] ...";
+    return "ADD, arguments: [userid] [movieid1] [movieid2] ...";
 }
 
 Response *AddMovieRequest::execute() {

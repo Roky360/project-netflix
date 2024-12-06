@@ -39,5 +39,5 @@ Response *AddMovieRequest::execute() {
     }
 
     // return ok response
-    return new Response();
+    return new Response(OK_200, this->context);
 }

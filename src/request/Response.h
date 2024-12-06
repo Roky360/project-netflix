@@ -2,6 +2,7 @@
 #define PROJECT_NETFLIX_RESPONSE_H
 #include <string>
 #include "../client_context/ClientContext.h"
+#include <map>
 using namespace std;
 
 enum Status {
@@ -33,6 +34,9 @@ public:
      * @return answer from the server in string
      */
     string toRawData();
+
+private:
+    static const map<Status, string> statusMap;
 };
 
 

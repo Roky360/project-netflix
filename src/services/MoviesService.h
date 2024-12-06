@@ -16,8 +16,10 @@ using namespace app;
 class MoviesService {
 public:
     const int MOVIE_RECOMMENDATION_COUNT = 10;
-// Delete copy constructor and assignment operator to ensure a single instance
+
+    // Delete copy constructor and assignment operator to ensure a single instance
     MoviesService(const MoviesService &) = delete;
+
     MoviesService &operator=(const MoviesService &) = delete;
 
     /**
@@ -70,6 +72,7 @@ private:
      */
     map<int, int> mapComparableMovies(int userID, int movieID, vector<int> *users, vector<int> *ranks);
 
+    static bool initialized;
     static MoviesService *instance;
 
     MoviesService() = default;

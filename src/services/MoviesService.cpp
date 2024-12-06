@@ -5,15 +5,17 @@
 #include <iostream>
 #include "MoviesService.h"
 
+bool MoviesService::initialized = false;
 MoviesService *MoviesService::instance = nullptr;
 
 MoviesService *MoviesService::getInstance() {
     // thread-safely for accessing the singleton instance
-    if (instance == nullptr) {
+    if (!initialized) {
         auto *pm = PermissionManager::getInstance();
         pm->requestWrite();
-        if (instance == nullptr) {
+        if (!initialized) {
             instance = new MoviesService();
+            initialized = true;
         }
         pm->unlock();
     }

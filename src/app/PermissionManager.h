@@ -17,7 +17,7 @@ namespace app {
      */
     class PermissionManager {
         static PermissionManager *instance;
-        shared_mutex mutex;
+        shared_mutex mtx; // Shared mutex of the threads that uses this class
         unordered_map<thread::id, shared_lock<shared_mutex> > readLocks{};
         unordered_map<thread::id, unique_lock<shared_mutex> > writeLocks{};
 

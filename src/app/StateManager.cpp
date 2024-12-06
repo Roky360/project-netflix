@@ -1,8 +1,7 @@
 #include "StateManager.h"
 
-#include <unordered_map>
-
 namespace app {
+    bool StateManager::initialized = false;
     StateManager *StateManager::instance = nullptr;
 
     StateManager::~StateManager() {
@@ -12,11 +11,12 @@ namespace app {
 
     StateManager *StateManager::getInstance() {
         // thread-safely for accessing the singleton instance
-        if (instance == nullptr) {
+        if (!initialized) {
             auto *pm = PermissionManager::getInstance();
             pm->requestWrite();
-            if (instance == nullptr) {
+            if (!initialized) {
                 instance = new StateManager();
+                initialized = true;
             }
             pm->unlock();
         }
@@ -39,11 +39,11 @@ namespace app {
         this->rp = rp;
     }
 
-    unordered_map<string, requestGen> StateManager::getRequestMap() {
+    map<string, requestGen> StateManager::getRequestMap() {
         return mapRequest;
     }
 
-    void StateManager::setRequestMap(unordered_map<string, requestGen> reqMap) {
+    void StateManager::setRequestMap(map<string, requestGen> reqMap) {
         mapRequest = std::move(reqMap);
     }
 }

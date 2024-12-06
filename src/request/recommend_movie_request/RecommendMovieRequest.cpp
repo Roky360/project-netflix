@@ -6,7 +6,7 @@ RecommendMovieRequest::RecommendMovieRequest(const vector<string> &args, ClientC
 }
 
 string RecommendMovieRequest::getHelpMsg() {
-    return "Get, arguments: [userid] [movieid]";
+    return "GET, arguments: [userid] [movieid]";
 }
 
 RecommendMovieRequest::RecommendMovieRequest() : Request() {

@@ -11,8 +11,7 @@ string HelpRequest::getHelpMsg() {
     return "help";
 }
 
-HelpRequest::HelpRequest() : Request() {
-}
+HelpRequest::HelpRequest() : Request() {}
 
 Response *HelpRequest::execute() {
     // if the user entered arguments - return invalid request.

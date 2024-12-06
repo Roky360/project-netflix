@@ -2,6 +2,7 @@
 #define PROJECT_NETFLIX_REQUEST_H
 
 #include "Response.h"
+#include "../client_context/ClientContext.h"
 #include <string>
 #include <vector>
 
@@ -9,9 +10,10 @@ class Request {
 public:
     // the arguments of the request
     vector<string> args;
+    // the client context of the request
+    ClientContext* context;
 
-    explicit Request(const vector<string> &args) : args(args) {
-    }
+    explicit Request(const vector<string> &args, ClientContext* cl) : args(args), context(cl) {}
 
     Request();
 

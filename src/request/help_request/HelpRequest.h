@@ -10,7 +10,7 @@ class HelpRequest : public Request {
 public:
     HelpRequest();
 
-    explicit HelpRequest(const vector<string> &args);
+    explicit HelpRequest(const vector<string> &args, ClientContext* cl);
 
     string getHelpMsg() override;
 

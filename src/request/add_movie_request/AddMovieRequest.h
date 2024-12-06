@@ -12,7 +12,7 @@ class AddMovieRequest : public Request {
 public:
     AddMovieRequest();
 
-    explicit AddMovieRequest(const vector<string> &args);
+    explicit AddMovieRequest(const vector<string> &args, ClientContext* cl);
 
     string getHelpMsg() override;
 

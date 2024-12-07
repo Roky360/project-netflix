@@ -13,7 +13,7 @@ int main() {
             {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
             {"GET", [](auto args) -> Request *{ return new GetMovieRequest(args); }},
             {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
-            {"patch", [](auto args) -> Request *{ return new PatchRequest(args); }},
+            {"PATCH", [](auto args) -> Request *{ return new PatchRequest(args); }},
     };
     // Initialize app state
     auto *sm = StateManager::getInstance();

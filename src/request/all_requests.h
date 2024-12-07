@@ -8,6 +8,7 @@
 #include "invalid_request/InvalidRequest.h"
 #include "add_movie_request/AddMovieRequest.h"
 #include "help_request/HelpRequest.h"
-#include "recommend_movie_request/RecommendMovieRequest.h"
+#include "get_movie_request/GetMovieRequest.h"
+#include "patch_request/PatchRequest.h"
 
 #endif //ALL_REQUESTS_H

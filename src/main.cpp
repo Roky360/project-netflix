@@ -9,12 +9,12 @@ using namespace db;
 
 int main() {
     // initialize supported requests map
-    const unordered_map<string, requestGen> requestMap = {
-            {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
-            {"GET", [](auto args) -> Request *{ return new GetRequest(args); }},
-            {"DELETE", [](auto args) -> Request *{ return new DeleteRequest(args); }},
-            {"PATCH", [](auto args) -> Request *{ return new PatchRequest(args); }},
-            {"POST", [](auto args) -> Request *{return new PostRequest(args); }},
+    const map<string, requestGen> requestMap = {
+            {"help", [](auto args, auto cl) -> Request *{ return new HelpRequest(args, cl); }},
+            {"GET", [](auto args, auto cl) -> Request *{ return new GetRequest(args, cl); }},
+            {"DELETE", [](auto args, auto cl) -> Request *{ return new DeleteRequest(args, cl); }},
+            {"PATCH", [](auto args, auto cl) -> Request *{ return new PatchRequest(args, cl); }},
+            {"POST", [](auto args, auto cl) -> Request *{return new PostRequest(args, cl); }},
     };
     // Initialize app state
     auto *sm = StateManager::getInstance();

@@ -13,7 +13,7 @@
 using namespace db;
 using namespace std;
 
-typedef Request *(*requestGen)(vector<string>);
+typedef Request *(*requestGen)(vector<string>, ClientContext*);
 
 namespace app {
     /**

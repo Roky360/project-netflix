@@ -1,16 +1,16 @@
-#include "DeleteMovieRequest.h"
+#include "PostRequest.h"
 #include "../../services/MoviesService.h"
 #include <string>
 
-DeleteMovieRequest::DeleteMovieRequest(const vector<std::string> &args, ClientContext *cl) : Request(args, cl){}
+PostRequest::PostRequest() : Request() {}
 
-DeleteMovieRequest::DeleteMovieRequest() : Request() {}
+PostRequest::PostRequest(const vector<std::string> &args, ClientContext *cl) : Request(args, cl) {}
 
-string DeleteMovieRequest::getHelpMsg() {
-    return "DELETE, arguments: [userid] [movieid1] [movieid2] ...";
+string PostRequest::getHelpMsg() {
+    return "POST, arguments: [userid] [movieid1] [movieid2] ...";
 }
 
-Response* DeleteMovieRequest::execute() {
+Response *PostRequest::execute() {
     // get the move service instance
     MoviesService *service = MoviesService::getInstance();
 
@@ -30,8 +30,8 @@ Response* DeleteMovieRequest::execute() {
         return new Response(BAD_REQUEST_400, this->context);
     }
 
-    // check if the user exist
-    if (!db->userExist(userId)) {
+    // if the user alreadt exist - return bad request
+    if (db->userExist(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
 
@@ -40,24 +40,17 @@ Response* DeleteMovieRequest::execute() {
     for (int i = 1; i < args.size(); ++i) {
         // try to transfer to int and then push it
         try {
-            int movieId = stoi(args[i]);
+            auto movieId = stoi(args[i]);
             movies.push_back(movieId);
         } catch (...) {
             return new Response(BAD_REQUEST_400, this->context);
         }
     }
 
-    // check every movie if the user has them
-    for (auto movieId : movies) {
-        if (!db->userHasMovie(userId, movieId)) {
-            return new Response(NOT_FOUND_404, this->context);
-        }
+    // add the movie to the user
+    for (auto movieID : movies) {
+        service->addMovieToUser(userId, movieID);
     }
 
-    // for each movie send to delete function in the service
-    for (auto movieId : movies) {
-        service->deleteMovieFromUser(userId, movieId);
-    }
-
-    return new Response(OK_200, this->context);
+    return new Response(CREATED_201, this->context);
 }

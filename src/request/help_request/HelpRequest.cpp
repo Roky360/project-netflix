@@ -22,12 +22,23 @@ Response *HelpRequest::execute() {
     // iterate over all the available commands and get their help messages
     string menu;
     for (const auto &commands: StateManager::getInstance()->getRequestMap()) {
-        Request *req = commands.second({});
-        menu += req->getHelpMsg() + "\n";
+        Request *req = commands.second({}, nullptr);
+        // if the request is help keep the msg and dont enter
+        if (commands.first != "help") {
+            menu += req->getHelpMsg() + "\n";
+        }
         delete req;
     }
-    if (!menu.empty())
+
+    // add the help message at the end
+    if (!menu.empty()) {
+        menu += "\n";
+    }
+    menu += this->getHelpMsg();
+
+    if (!menu.empty()) {
         menu.erase(menu.end() - 1); // remove the last '\n'
+    }
 
     // return the response
     return new Response(OK_200, this->context, menu);

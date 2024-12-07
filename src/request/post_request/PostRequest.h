@@ -7,7 +7,7 @@
 /**
  * Responsible for create new users and marking movies as watched to them.
  */
-class PostRequest : Request {
+class PostRequest : public Request {
 public:
     PostRequest();
 

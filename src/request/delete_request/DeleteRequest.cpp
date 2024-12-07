@@ -1,16 +1,16 @@
-#include "PatchRequest.h"
+#include "DeleteRequest.h"
 #include "../../services/MoviesService.h"
 #include <string>
 
-PatchRequest::PatchRequest(const vector<std::string> &args, ClientContext *cl) : Request(args, cl) {}
+DeleteRequest::DeleteRequest(const vector<std::string> &args, ClientContext *cl) : Request(args, cl){}
 
-PatchRequest::PatchRequest() : Request() {}
+DeleteRequest::DeleteRequest() : Request() {}
 
-string PatchRequest::getHelpMsg() {
-    return "PATCH, arguments: [userid] [movieid1] [movieid2] ...";
+string DeleteRequest::getHelpMsg() {
+    return "DELETE, arguments: [userid] [movieid1] [movieid2] ...";
 }
 
-Response* PatchRequest::execute() {
+Response* DeleteRequest::execute() {
     // get the move service instance
     MoviesService *service = MoviesService::getInstance();
 
@@ -30,7 +30,7 @@ Response* PatchRequest::execute() {
         return new Response(BAD_REQUEST_400, this->context);
     }
 
-    // if the user not exist - return bad request
+    // check if the user exist
     if (!db->userExist(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
@@ -40,19 +40,24 @@ Response* PatchRequest::execute() {
     for (int i = 1; i < args.size(); ++i) {
         // try to transfer to int and then push it
         try {
-            auto movieId = stoi(args[i]);
+            int movieId = stoi(args[i]);
             movies.push_back(movieId);
         } catch (...) {
             return new Response(BAD_REQUEST_400, this->context);
         }
     }
 
-    // add the movie to the user
-    for (auto movieID : movies) {
-        service->addMovieToUser(userId, movieID);
+    // check every movie if the user has them
+    for (auto movieId : movies) {
+        if (!db->userHasMovie(userId, movieId)) {
+            return new Response(NOT_FOUND_404, this->context);
+        }
     }
 
-    // return ok response
-    return new Response(OK_200, this->context);
+    // for each movie send to delete function in the service
+    for (auto movieId : movies) {
+        service->deleteMovieFromUser(userId, movieId);
+    }
 
+    return new Response(OK_200, this->context);
 }

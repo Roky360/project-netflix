@@ -11,9 +11,10 @@ int main() {
     // initialize supported requests map
     const unordered_map<string, requestGen> requestMap = {
             {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
-            {"GET", [](auto args) -> Request *{ return new GetMovieRequest(args); }},
-            {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
+            {"GET", [](auto args) -> Request *{ return new GetRequest(args); }},
+            {"DELETE", [](auto args) -> Request *{ return new DeleteRequest(args); }},
             {"PATCH", [](auto args) -> Request *{ return new PatchRequest(args); }},
+            {"POST", [](auto args) -> Request *{return new PostRequest(args); }},
     };
     // Initialize app state
     auto *sm = StateManager::getInstance();

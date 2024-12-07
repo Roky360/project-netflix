@@ -1,5 +1,5 @@
-#ifndef PROJECT_NETFLIX_RECOMMENDMOVIEREQUEST_H
-#define PROJECT_NETFLIX_RECOMMENDMOVIEREQUEST_H
+#ifndef PROJECT_NETFLIX_GETMOVIEREQUEST_H
+#define PROJECT_NETFLIX_GETMOVIEREQUEST_H
 
 #include "../Request.h"
 #include "../Response.h"
@@ -7,11 +7,11 @@
 /**
  * Responsible for recommending additional movies to a user with a given movie.
  */
-class RecommendMovieRequest : public Request {
+class GetMovieRequest : public Request {
 public:
-    RecommendMovieRequest();
+    GetMovieRequest();
 
-    explicit RecommendMovieRequest(const vector<string> &args, ClientContext* cl);
+    explicit GetMovieRequest(const vector<string> &args, ClientContext* cl);
 
     string getHelpMsg() override;
 
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif //PROJECT_NETFLIX_RECOMMENDMOVIEREQUEST_H
+#endif //PROJECT_NETFLIX_GETMOVIEREQUEST_H

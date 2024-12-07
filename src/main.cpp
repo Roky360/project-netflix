@@ -11,7 +11,7 @@ int main() {
     // initialize supported requests map
     const unordered_map<string, requestGen> requestMap = {
         {"help", [](auto args) -> Request *{ return new HelpRequest(args); }},
-        {"recommend", [](auto args) -> Request *{ return new RecommendMovieRequest(args); }},
+        {"GET", [](auto args) -> Request *{ return new GetMovieRequest(args); }},
         {"add", [](auto args) -> Request *{ return new AddMovieRequest(args); }},
     };
     // Initialize app state

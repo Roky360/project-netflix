@@ -11,10 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Add executable with all source files under `src`
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.h" "src/*.cpp")
-add_executable(project_netflix ${SOURCES}
-        src/request/delete_movie_request/DeleteMovieRequest.h
-        src/request/patch_request/PatchRequest.cpp
-        src/request/patch_request/PatchRequest.h)
+add_executable(project_netflix ${SOURCES})
 
 # If tests are enabled, include cmake file for tests
 option(BUILD_TESTS "Build gtest tests" OFF)

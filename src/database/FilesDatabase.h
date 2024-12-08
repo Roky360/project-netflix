@@ -11,7 +11,7 @@ namespace db {
     /**
      * Allows saving data to a file.
      */
-    class FilesDatabase : public Database {
+    class FilesDatabase final : public Database {
     public:
         static const string DB_DIRECTORY;
         static const string DB_FILE_PATH;

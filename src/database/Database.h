@@ -59,7 +59,7 @@ namespace db {
         /**
          * Returns a list of IDs of all the users that watched a certain movie.
          *
-         * @param movieId The ID of the movie.
+         * @param movieId The ID of the movie in question.
          * @return A list of all the users that watched the movie.
          */
         virtual vector<int> usersWatched(int movieId) = 0;

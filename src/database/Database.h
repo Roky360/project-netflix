@@ -57,6 +57,14 @@ namespace db {
         virtual bool userHasMovie(int userId, int movieId) = 0;
 
         /**
+         * Returns a list of IDs of all the users that watched a certain movie.
+         *
+         * @param movieId The ID of the movie.
+         * @return A list of all the users that watched the movie.
+         */
+        virtual vector<int> usersWatched(int movieId) = 0;
+
+        /**
          * Checks if a user is registered in the database.
          *
          * @param userId The ID of the user to check.

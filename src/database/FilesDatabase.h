@@ -42,6 +42,8 @@ namespace db {
 
         bool userHasMovie(int userId, int movieId) override;
 
+        vector<int> usersWatched(int movieId) override;
+
         bool userExists(int userId) override;
 
         void deleteMovieFromUser(int userId, int movieId) override;

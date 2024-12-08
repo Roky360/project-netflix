@@ -199,6 +199,20 @@ namespace db {
         return find(userMovies.begin(), userMovies.end(), movieId) != userMovies.end();
     }
 
+    vector<int> FilesDatabase::usersWatched(int movieId) {
+        PermissionManager::getInstance()->requestRead();
+
+        vector<int> users;
+        for (auto item: this->uidToLineMap) {
+            if (userHasMovie(item.first, movieId)) {
+                users.push_back(item.first);
+            }
+        }
+
+        PermissionManager::getInstance()->unlock();
+        return users;
+    }
+
     bool FilesDatabase::userExists(const int userId) {
         PermissionManager::getInstance()->requestRead();
         const bool exists = this->uidToLineMap.find(userId) != this->uidToLineMap.end();

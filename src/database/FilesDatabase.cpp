@@ -7,8 +7,8 @@
 #include "../utils/Utils.h"
 // include libraries to use mkdir method
 #ifdef _WIN32
-    #include <direct.h>  // Windows-specific
-    #define mkdir(path) _mkdir(path)
+#include <direct.h>  // Windows-specific
+#define mkdir(path) _mkdir(path)
 #else
     #include <sys/stat.h>  // Linux-specific
     #define mkdir(path) mkdir(path, 0755)
@@ -51,64 +51,87 @@ namespace db {
         }
     }
 
-    void FilesDatabase::addMovieToUser(int userId, int movieId) {
+    void FilesDatabase::updateLine(const int lineNum, string line) {
         PermissionManager::getInstance()->requestWrite();
 
-        ifstream inputFile(DB_FILE_PATH);
+        // if this line doesn't exist in the file yet
+        if (lineNum == this->uidToLineMap.size()) {
+            ofstream f;
+            f.open(DB_FILE_PATH, ios_base::app); // open for appending
+            f << line << "\n";
+            f.close();
+            PermissionManager::getInstance()->unlock();
+            return;
+        }
+
+        ifstream dbIn(DB_FILE_PATH);
         vector<string> fileLines; // holds all the lines including the updated line, to be rewritten back to the db file
-        string line;
-        bool userFound = false;
+        string currLine;
+        int currLineNum = 0;
+        bool lineFound = false;
 
         // read all lines
-        while (getline(inputFile, line)) {
-            istringstream iss(line);
-            int currUserId;
-            iss >> currUserId;
+        while (!lineFound && getline(dbIn, currLine)) {
+            // found the line to be updated
+            if (currLineNum == lineNum) {
+                fileLines.push_back(line);
 
-            // userId exists in the file
-            if (currUserId == userId) {
-                userFound = true;
-                vector<int> movies;
-                int movie;
-
-                // read existing movie IDs
-                while (iss >> movie) {
-                    movies.push_back(movie);
+                // read remaining lines and finish the loop
+                while (getline(dbIn, currLine)) {
+                    fileLines.push_back(currLine);
                 }
-
-                // add the new movie if not already in the list
-                if (find(movies.begin(), movies.end(), movieId) == movies.end()) {
-                    movies.push_back(movieId);
-                }
-
-                // create the updated line
-                ostringstream oss;
-                oss << userId;
-                for (const auto &m: movies) {
-                    oss << " " << m;
-                }
-                line = oss.str();
+                lineFound = true;
+            } else {
+                fileLines.push_back(currLine);
+                currLineNum++;
             }
-
-            fileLines.push_back(line);
         }
-        inputFile.close();
-
-        // if user was not found, add a new line for the user at the end of the file
-        if (!userFound) {
-            ostringstream oss;
-            oss << userId << " " << movieId;
-            fileLines.push_back(oss.str());
-            // add an entry to the map for the new user
-            this->uidToLineMap[userId] = fileLines.size() - 1;
-        }
+        dbIn.close();
 
         // rewrite all lines to the file
-        ofstream outputFile(DB_FILE_PATH, ios::trunc);
+        ofstream dbOut(DB_FILE_PATH, ios::trunc);
         for (const auto &l: fileLines) {
-            outputFile << l << "\n";
+            dbOut << l << "\n";
         }
-        outputFile.close();
+        dbOut.close();
+
+        PermissionManager::getInstance()->unlock();
+    }
+
+    void FilesDatabase::addMovieToUser(const int userId, const int movieId) {
+        PermissionManager::getInstance()->requestWrite();
+
+        string line; // updated line of the user
+        int lineNum;
+
+        // user doesn't exist -
+        if (this->uidToLineMap.find(userId) == this->uidToLineMap.end()) {
+            ostringstream oss;
+            oss << userId << " " << movieId;
+            line = oss.str();
+            // add an entry to the map for the new user
+            lineNum = this->uidToLineMap.size();
+        } else {
+            lineNum = this->uidToLineMap[userId];
+            // user exists - add the movie to its line, if it's not already there
+            vector<int> userMovies = this->getUserMovies(userId);
+            // add the new movie if not already in the list
+            if (find(userMovies.begin(), userMovies.end(), movieId) == userMovies.end()) {
+                userMovies.push_back(movieId);
+            }
+
+            // create the updated line
+            ostringstream oss;
+            oss << userId;
+            for (const auto &m: userMovies) {
+                oss << " " << m;
+            }
+            line = oss.str();
+        }
+
+        // write the new line to the db file
+        updateLine(lineNum, line);
+        this->uidToLineMap[userId] = lineNum; // update user line number
 
         PermissionManager::getInstance()->unlock();
     }
@@ -134,7 +157,11 @@ namespace db {
         getline(f, line);
 
         // read all movie IDs to an array
-        vector<string> movieIdsStr = Utils::split(line.substr(to_string(userId).length() + 1), " ");
+        vector<string> movieIdsStr;
+        if (line.length() > to_string(userId).length()) {
+            // if the user HAS movies
+            movieIdsStr = Utils::split(line.substr(to_string(userId).length() + 1), " ");
+        }
         vector<int> movieIds;
         movieIds.reserve(movieIdsStr.size());
         // convert each element to int
@@ -170,5 +197,35 @@ namespace db {
     bool FilesDatabase::userHasMovie(const int userId, const int movieId) {
         auto userMovies = this->getUserMovies(userId);
         return find(userMovies.begin(), userMovies.end(), movieId) != userMovies.end();
+    }
+
+    bool FilesDatabase::userExists(const int userId) {
+        PermissionManager::getInstance()->requestRead();
+        const bool exists = this->uidToLineMap.find(userId) != this->uidToLineMap.end();
+        PermissionManager::getInstance()->unlock();
+        return exists;
+    }
+
+    void FilesDatabase::deleteMovieFromUser(const int userId, const int movieId) {
+        PermissionManager::getInstance()->requestWrite();
+        // if there is nothing to delete then return
+        if (!userHasMovie(userId, movieId)) {
+            PermissionManager::getInstance()->unlock();
+            return;
+        }
+
+        // delete the movie from the user's movies
+        vector<int> userMovies = this->getUserMovies(userId);
+        userMovies.erase(find(userMovies.begin(), userMovies.end(), movieId));
+        // build the updated line
+        ostringstream newLine;
+        newLine << userId;
+        for (const auto movie: userMovies) {
+            newLine << " " << movie;
+        }
+        // write the updated line to the db file
+        updateLine(this->uidToLineMap[userId], newLine.str());
+
+        PermissionManager::getInstance()->unlock();
     }
 } // db

@@ -55,6 +55,22 @@ namespace db {
          * @return If the user has watched the movie.
          */
         virtual bool userHasMovie(int userId, int movieId) = 0;
+
+        /**
+         * Checks if a user is registered in the database.
+         *
+         * @param userId The ID of the user to check.
+         * @return If the user exists.
+         */
+        virtual bool userExists(int userId) = 0;
+
+        /**
+         * Deletes a movie from a user (marks a movie as "unwatched").
+         *
+         * @param userId ID of the user to remove from.
+         * @param movieId ID of the movie to remove.
+         */
+        virtual void deleteMovieFromUser(int userId, int movieId) = 0;
     };
 } // db
 

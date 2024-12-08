@@ -23,6 +23,11 @@ namespace db {
 
         ~FilesDatabase() override = default;
 
+    private:
+        void updateLine(int lineNum, string line);
+
+    public:
+
         /* Methods */
 
         void loadDbFile();
@@ -36,6 +41,10 @@ namespace db {
         int getUserCount() override;
 
         bool userHasMovie(int userId, int movieId) override;
+
+        bool userExists(int userId) override;
+
+        void deleteMovieFromUser(int userId, int movieId) override;
     };
 } // db
 

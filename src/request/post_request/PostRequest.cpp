@@ -31,7 +31,7 @@ Response *PostRequest::execute() {
     }
 
     // if the user alreadt exist - return bad request
-    if (db->userExist(userId)) {
+    if (db->userExists(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
 

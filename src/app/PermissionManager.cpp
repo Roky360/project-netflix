@@ -1,6 +1,24 @@
 #include "PermissionManager.h"
 
+#define DISABLE_THREAD_SAFE
+
 namespace app {
+#ifdef DISABLE_THREAD_SAFE
+    PermissionManager *PermissionManager::instance = new PermissionManager();
+
+    PermissionManager *PermissionManager::getInstance() {
+        return instance;
+    }
+
+    void PermissionManager::requestRead() {
+    }
+
+    void PermissionManager::requestWrite() {
+    }
+
+    void PermissionManager::unlock() {
+    }
+#else
     // immediately initialize the singleton instance to ensure only one is created (thread-safety).
     PermissionManager *PermissionManager::instance = new PermissionManager();
 
@@ -33,4 +51,5 @@ namespace app {
             this->writeLocks.erase(thrId);
         }
     }
+#endif
 } // app

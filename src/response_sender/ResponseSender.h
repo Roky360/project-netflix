@@ -4,7 +4,7 @@
 #include "../request/Response.h"
 
 /**
-* An interface that manages the sending of resonses to the client.
+* An interface that manages the sending of responses to the client.
 * Any implementation of this interface defines its own delivery method of the responses.
 */
 class ResponseSender {

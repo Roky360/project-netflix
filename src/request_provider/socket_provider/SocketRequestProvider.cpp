@@ -7,11 +7,44 @@
 #include <sstream>        // For stringstream
 #include <iostream>       // For std::cerr
 
+// Constructor implementation
+SocketRequestProvider::SocketRequestProvider(int port, string ip, int backlog)
+    : serverPort(port), serverIP(ip), backlogAmount(backlog) {}
+
+stringstream SocketRequestProvider::readSocketToStream(int socket) {
+    stringstream ss;
+    char buffer[1024]; // temporary for incoming chunks
+    int bytesReceived;
+
+    // read data from the socket in chunks
+    while ((bytesReceived = recv(socket, buffer, sizeof(buffer) - 1, 0)) > 0) {
+        buffer[bytesReceived] = '\0';
+        ss << buffer;
+    }
+
+    // if there was problem
+    if (bytesReceived < 0) {
+        perror("Error receiving data");
+        ss.str("");  // reset the stream content
+        ss.clear();
+    }
+
+    return ss;
+}
+
+vector<string> SocketRequestProvider::parseArguments(stringstream &ss) {
+    vector<string> args; // holds the arguments
+
+    // read the arguments of the line and enter them to args
+    string arg;
+    while (ss >> arg) {
+        args.push_back(arg);
+    }
+
+    return args;
+}
 
 Request* SocketRequestProvider::nextRequest() {
-    // get the server port from the state manager
-    const int serverPort = StateManager::getInstance()->getServerPort();
-
     // create the socket and check if it worked
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
@@ -23,8 +56,8 @@ Request* SocketRequestProvider::nextRequest() {
     struct sockaddr_in sin;
     memset(&sin,0,sizeof(sin));
     sin.sin_family = AF_INET;
-    sin.sin_addr.s_addr = INADDR_ANY;
-    sin.sin_port = htons(serverPort);
+    sin.sin_addr.s_addr = this->serverIP;
+    sin.sin_port = htons(this->serverPort);
 
     // bind the socket and check for error
     if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
@@ -34,7 +67,7 @@ Request* SocketRequestProvider::nextRequest() {
     }
 
     // listens for incoming connections. max 5 connections. check for errors
-    if (listen(sock, 5) < 0) {
+    if (listen(sock, this->backlogAmount) < 0) {
         perror("error listening to a socket");
         close(sock);
         return nullptr;
@@ -52,32 +85,23 @@ Request* SocketRequestProvider::nextRequest() {
         return nullptr;
     }
 
-    // holds the message from the client
-    char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-    if (read_bytes < 0) {
-        perror("Error receiving data");
+    // get the client msg into the stream
+    stringstream ss = this->readSocketToStream(client_sock);
+
+    // if the stream is empty: handle the error
+    if (ss.str().empty()) {
         close(client_sock);
-        close(sock);
         return nullptr;
     }
 
-    // Parse received data
-    string input(buffer); // hold the input from the user
-    stringstream ss(input); // Use a string stream to parse the input string
-
-    string reqName; // holds the request name
-    vector<std::string> args;
+    // holds the request name
+    string reqName;
 
     // get the first word as the request name
     ss >> reqName;
 
-    // read the rest of the line and enter them to args
-    string arg;
-    while (ss >> arg) {
-        args.push_back(arg);
-    }
+    // get the other arguments
+    vector<string> args = this->parseArguments(ss);
 
     // create a ClientContext with the client socket
     ClientContext* clientContext = new ClientContext(client_sock);

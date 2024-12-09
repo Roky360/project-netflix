@@ -31,7 +31,7 @@ Response* DeleteRequest::execute() {
     }
 
     // check if the user exist
-    if (!db->userExist(userId)) {
+    if (!db->userExists(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
 

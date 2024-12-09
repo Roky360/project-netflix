@@ -46,4 +46,5 @@ namespace app {
     void StateManager::setRequestMap(map<string, requestGen> reqMap) {
         mapRequest = std::move(reqMap);
     }
+
 }

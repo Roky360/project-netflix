@@ -1,7 +1,7 @@
 #include "app/App.h"
 #include "app/StateManager.h"
 #include "database/FilesDatabase.h"
-#include "request_provider/cli_provider/CliRequestProvider.h"
+#include "request_provider/socket_provider/SocketRequestProvider.h"
 #include "request/all_requests.h"
 
 using namespace app;
@@ -20,7 +20,7 @@ int main() {
     auto *sm = StateManager::getInstance();
     sm->setDb(new FilesDatabase());
     sm->setRequestMap(requestMap);
-    sm->setRequestProvider(new CliRequestProvider());
+    sm->setRequestProvider(new SocketRequestProvider(20200, "127.0.0.1", 10));
 
     // Run app
     auto *app = new App();

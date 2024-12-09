@@ -79,6 +79,7 @@ namespace app {
          * @param reqMap RequestMap
          */
         void setRequestMap(map<string, requestGen> reqMap);
+
     };
 }
 

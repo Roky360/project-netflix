@@ -22,13 +22,13 @@ TEST(Request, helpRequest_sanityTest) {
     vector<string> vec = {"i cant", "be here"};
 
     // create new help request - with arguments
-    Request *helpReq2 = new HelpRequest(vec);
+    Request *helpReq2 = new HelpRequest(vec, {});
 
     // execute and get the response
     Response *res2 = helpReq2->execute();
 
     // check the response
-    EXPECT_EQ(res2->status, INVALID_ARG);
+    EXPECT_EQ(res2->status, BAD_REQUEST_400);
 }
 
 // test add request

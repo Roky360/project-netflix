@@ -45,6 +45,11 @@ public:
      */
     vector<int> recommendMovies(int userID, int movieID);
 
+    /**
+     * Deletes a movie from a user's watched list
+     * @param userId int, the user's id
+     * @param movieId int, the movie's id
+     */
     void deleteMovieFromUser(int userId, int movieId);
 
 private:

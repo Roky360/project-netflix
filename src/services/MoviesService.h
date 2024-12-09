@@ -45,6 +45,8 @@ public:
      */
     vector<int> recommendMovies(int userID, int movieID);
 
+    void deleteMovieFromUser(int userId, int movieId);
+
 private:
     /**
      * Returns all the other users that watched the same movie as the given movie, and are not the user

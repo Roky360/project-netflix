@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "../src/services/MoviesService.h"
-#include "../src/request/add_movie_request/AddMovieRequest.h"
+#include "../src/request/post_request/PostRequest.h"
 
 
 TEST(recommendation_algo_tests, recommendMovies_Final) {

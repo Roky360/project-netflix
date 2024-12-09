@@ -31,7 +31,7 @@ Response* PatchRequest::execute() {
     }
 
     // if the user not exist - return bad request
-    if (!db->userExist(userId)) {
+    if (!db->userExists(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
 

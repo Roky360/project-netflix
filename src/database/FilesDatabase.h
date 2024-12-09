@@ -11,7 +11,7 @@ namespace db {
     /**
      * Allows saving data to a file.
      */
-    class FilesDatabase : public Database {
+    class FilesDatabase final : public Database {
     public:
         static const string DB_DIRECTORY;
         static const string DB_FILE_PATH;
@@ -22,6 +22,11 @@ namespace db {
         explicit FilesDatabase();
 
         ~FilesDatabase() override = default;
+
+    private:
+        void updateLine(int lineNum, string line);
+
+    public:
 
         /* Methods */
 
@@ -36,6 +41,12 @@ namespace db {
         int getUserCount() override;
 
         bool userHasMovie(int userId, int movieId) override;
+
+        vector<int> usersWatched(int movieId) override;
+
+        bool userExists(int userId) override;
+
+        void deleteMovieFromUser(int userId, int movieId) override;
     };
 } // db
 

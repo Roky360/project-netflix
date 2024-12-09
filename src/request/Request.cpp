@@ -2,10 +2,11 @@
 #include "invalid_request/InvalidRequest.h"
 #include "../app/StateManager.h"
 #include <map>
+#include <utility>
 
 using namespace app;
 
-Request *Request::fromName(const string &reqName, vector<string> args) {
+Request *Request::fromName(const string &reqName, vector<string> args, ClientContext* cl) {
     // get the state manager
     auto manager = StateManager::getInstance();
 
@@ -18,8 +19,8 @@ Request *Request::fromName(const string &reqName, vector<string> args) {
     }
 
     // return the wanted request
-    return map[reqName](args);
+    return map[reqName](std::move(args), cl);
 }
 
-Request::Request() : args({}) {
+Request::Request() : args({}), context(nullptr) {
 }

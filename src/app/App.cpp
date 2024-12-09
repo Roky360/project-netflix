@@ -12,6 +12,12 @@ namespace app {
 
         while (true) {
             Request *request = rp->nextRequest();
+
+            // if there was a problem in the server, continue to the next
+            if (request == nullptr) {
+                continue;
+            }
+
             Response *response = request->execute();
 
             if (!response->payload.empty()) {

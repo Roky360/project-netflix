@@ -9,14 +9,14 @@ using namespace std;
 
 Request *CliRequestProvider::nextRequest() {
     vector<string> args; // holds the arguments of the request
-    string str; // hold the input from the user
+    string input; // hold the input from the user
     string reqName; // holds the request name
 
     // get the wanted request from the user
-    getline(cin, str);
+    getline(cin, input);
 
     // Use a string stream to parse the input string
-    stringstream ss(str);
+    stringstream ss(input);
 
     // get the first word as the request name
     ss >> reqName;
@@ -27,5 +27,5 @@ Request *CliRequestProvider::nextRequest() {
         args.push_back(arg);
     }
 
-    return Request::fromName(reqName, args);
+    return Request::fromName(reqName, args, nullptr);
 };

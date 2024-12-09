@@ -36,9 +36,10 @@ public:
      * return the wanted request
      * @param reqName the request name
      * @param args the arguments of the request
+     * @param cl the client context
      * @return the wanted request
      */
-    static Request *fromName(const string &reqName, vector<string> args);
+    static Request *fromName(const string &reqName, vector<string> args, ClientContext* cl);
 };
 
 #endif

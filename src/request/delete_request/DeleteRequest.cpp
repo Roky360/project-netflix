@@ -14,9 +14,6 @@ Response* DeleteRequest::execute() {
     // get the move service instance
     MoviesService *service = MoviesService::getInstance();
 
-    // get the database instance
-    Database* db = StateManager::getInstance()->getDb();
-
     // if the user didnt entered enough arguments.
     if (args.size() <= 1) {
         return new Response(BAD_REQUEST_400, this->context);
@@ -31,7 +28,7 @@ Response* DeleteRequest::execute() {
     }
 
     // check if the user exist
-    if (!db->userExists(userId)) {
+    if (!service->userExists(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
 
@@ -49,7 +46,7 @@ Response* DeleteRequest::execute() {
 
     // check every movie if the user has them
     for (auto movieId : movies) {
-        if (!db->userHasMovie(userId, movieId)) {
+        if (!service->userHasMovie(userId, movieId)) {
             return new Response(NOT_FOUND_404, this->context);
         }
     }
@@ -59,5 +56,5 @@ Response* DeleteRequest::execute() {
         service->deleteMovieFromUser(userId, movieId);
     }
 
-    return new Response(OK_200, this->context);
+    return new Response(NO_CONTENT_204, this->context);
 }

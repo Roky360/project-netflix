@@ -14,9 +14,6 @@ Response* PatchRequest::execute() {
     // get the move service instance
     MoviesService *service = MoviesService::getInstance();
 
-    // get the database instance
-    Database* db = StateManager::getInstance()->getDb();
-
     // if the user didnt entered enough arguments.
     if (args.size() <= 1) {
         return new Response(BAD_REQUEST_400, this->context);
@@ -31,7 +28,7 @@ Response* PatchRequest::execute() {
     }
 
     // if the user not exist - return bad request
-    if (!db->userExists(userId)) {
+    if (!service->userExists(userId)) {
         return new Response(NOT_FOUND_404, this->context);
     }
 
@@ -53,6 +50,6 @@ Response* PatchRequest::execute() {
     }
 
     // return ok response
-    return new Response(OK_200, this->context);
+    return new Response(NO_CONTENT_204, this->context);
 
 }

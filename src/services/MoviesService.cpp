@@ -56,6 +56,8 @@ vector<int> MoviesService::recommendMovies(int userID, int movieID) {
 }
 
 void MoviesService::deleteMovieFromUser(int userId, int movieId) {
+    Database *db = StateManager::getInstance()->getDb();
+    db->deleteMovieFromUser(userId, movieId);
 }
 
 vector<int> MoviesService::getComparableUsers(int userID, int movieID) {

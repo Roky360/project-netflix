@@ -11,36 +11,19 @@ class ClientContext {
 public:
 
     /**
-     * return the val of the key in the map
-     * if the key not found - throw invalid_argument exception
-     * @param key the key in the map
-     * @return the val of the key
+     * constructor.
+     * @param cs
      */
-    string getField(const string& key) const;
+     ClientContext(int cs);
 
     /**
-     * get key and val and enter them to the map
-     * @param key the key
-     * @param value the map
+     * get the client socket
+     * @return client context
      */
-    void setField(const string& key, const string& value);
-
-    /**
-     * @param key the key
-     * @return true is the key exist, false otherwise
-     */
-    bool hasField(const string& key) const;
-
-    /**
-     * add the key and the val to the map
-     * note: if the key already exist - only change his value!
-     * @param key the key
-     * @param val the key value
-     */
-    void addField(const string& key, const string& val);
+    int getClientSocket();
 
 private:
-    map<string, string> args;
+    int clientSocket;
 
 };
 

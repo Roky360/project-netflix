@@ -26,6 +26,7 @@ namespace app {
         Database *db{};
         map<string, requestGen> mapRequest;
         RequestProvider *rp{};
+        int server_port;
 
         StateManager() = default;
 
@@ -79,6 +80,18 @@ namespace app {
          * @param reqMap RequestMap
          */
         void setRequestMap(map<string, requestGen> reqMap);
+
+        /**
+         * server_port getter
+         * @return the server port
+         */
+        int getServerPort();
+
+        /**
+         * server_port setter
+         * @param port the new port
+         */
+        void setServerPort(int port);
     };
 }
 

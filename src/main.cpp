@@ -21,6 +21,7 @@ int main() {
     sm->setDb(new FilesDatabase());
     sm->setRequestMap(requestMap);
     sm->setRequestProvider(new CliRequestProvider());
+    sm->setServerPort(20200);
 
     // Run app
     auto *app = new App();

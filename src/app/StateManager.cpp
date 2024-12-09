@@ -46,4 +46,12 @@ namespace app {
     void StateManager::setRequestMap(map<string, requestGen> reqMap) {
         mapRequest = std::move(reqMap);
     }
+
+    int StateManager::getServerPort() {
+        return this->server_port;
+    }
+
+    void StateManager::setServerPort(int port) {
+        this->server_port = port;
+    }
 }

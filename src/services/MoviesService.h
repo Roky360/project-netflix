@@ -52,6 +52,22 @@ public:
      */
     void deleteMovieFromUser(int userId, int movieId);
 
+    /**
+     * Checks whether a user has seen a movie
+     * @param userID int, the user's ID
+     * @param movieID int, the movie's ID
+     * @return
+     */
+    bool userHasMovie(int userID, int movieID);
+
+    /**
+     * Checks whether a user is registered to our database
+     * @param userID int, the user we wish to check
+     * @return
+     */
+    bool userExists (int userID);
+
+
 private:
     /**
      * Returns all the other users that watched the same movie as the given movie, and are not the user

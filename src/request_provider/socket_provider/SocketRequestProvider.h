@@ -12,6 +12,8 @@ using namespace app;
  */
 class SocketRequestProvider : public RequestProvider {
 public:
+    ~SocketRequestProvider();
+
     /**
      * return from the socket the wanted request with the arguments
      * @return request
@@ -30,6 +32,7 @@ private:
     int serverPort;
     string serverIP;
     int backlogAmount;
+    int serverSock;
 
     /**
      * method that read the client input and enter it to string stream
@@ -43,7 +46,7 @@ private:
      * @param ss string stream
      * @return vector with the arguments in the stream
      */
-    vector<string> parseArguments(stringstream& ss);
+    vector<string> parseArguments(stringstream &ss);
 };
 
 

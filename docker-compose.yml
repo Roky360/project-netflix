@@ -1,3 +1,7 @@
+#networks:
+#  nakniki_network_inc:
+#    driver: bridge
+
 services:
   # Run main application
   app:
@@ -6,6 +10,10 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_TESTS: "OFF"
+    ports:
+      - "20200:20200"
+#    networks:
+#      - nakniki_network_inc
     stdin_open: true                  # enable stdin to the container
     tty: true
     command: ./build/project_netflix  # executable is located here
@@ -27,5 +35,10 @@ services:
     environment:
       IP: "127.0.0.1"
       PORT: "20200"
+    network_mode: host
+    depends_on:
+      - app
+#    networks:
+#      - nakniki_network_inc
     stdin_open: true
     tty: true

@@ -22,8 +22,8 @@ int main() {
     auto *sm = StateManager::getInstance();
     sm->setDb(new FilesDatabase());
     sm->setRequestMap(requestMap);
-    RequestProvider *rProvider = new SocketRequestProvider(20200, "127.0.0.1", 10);
-    ResponseSender *rSender = new SocketResponseSender;
+    RequestProvider *rProvider = new SocketRequestProvider(20200, "", 10);
+    ResponseSender *rSender = new SocketResponseSender();
     RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender);
     // Run app
     auto *app = new App(rProvider, rSender, rExecutor);

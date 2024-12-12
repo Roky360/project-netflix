@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y cmake
 # Set the working directory
 WORKDIR /app
 
+EXPOSE 20200
+
 # Copy the project files and tests
 COPY CMakeLists.txt .
 COPY src/ src/

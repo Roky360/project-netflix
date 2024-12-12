@@ -16,11 +16,13 @@ def main():
         return 0
 
     sock = socket(AF_INET, SOCK_STREAM)
+    print((ip, port))
     sock.connect((ip, port))  # connect to server
 
     # receive requests from user, send to server and wait for response
     while True:
-        req = input()
+        req = input("Enter request: ")
+        req += '\n'
         sock.send(req.encode())
         res = sock.recv(1024)
         print(res.decode())

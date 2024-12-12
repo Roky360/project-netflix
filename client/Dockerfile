@@ -12,4 +12,5 @@ ENV IP=${IP}
 ENV PORT=${PORT}
 
 # Run the client main with provided arguments
-CMD ["sh", "-c", "python client.py $IP $PORT"]
+#CMD ["sh", "-c", "python client.py $IP $PORT"]
+CMD ["python", "client.py", "localhost", "20200"]

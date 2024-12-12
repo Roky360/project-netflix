@@ -4,6 +4,7 @@
 #include "../RequestProvider.h"
 #include "../../request/Request.h"
 #include "../../app/StateManager.h"
+#include "../../request/all_requests.h"
 
 using namespace app;
 
@@ -18,7 +19,13 @@ public:
      * return from the socket the wanted request with the arguments
      * @return request
      */
-    Request *nextRequest() override;
+    Request *nextRequest(ClientContext* cl) override;
+
+    /**
+     * listen and accept the users. return the user context
+     * @return user context
+     */
+    ClientContext *acceptClient() override;
 
     /**
      * constructor
@@ -39,7 +46,7 @@ private:
      * @param socket the client socket
      * @return string stream with the client msg
      */
-    stringstream readSocketToStream(int socket);
+    stringstream readSocketToStream(int socket, bool* hasError);
 
     /**
      * get string stream and return vector<string> with the arguments in the stream

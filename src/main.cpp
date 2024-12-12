@@ -24,7 +24,7 @@ int main() {
     sm->setRequestMap(requestMap);
     RequestProvider *rProvider = new SocketRequestProvider(20200, "", 10);
     ResponseSender *rSender = new SocketResponseSender();
-    RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender);
+    RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender, rProvider);
     // Run app
     auto *app = new App(rProvider, rSender, rExecutor);
     app->run();

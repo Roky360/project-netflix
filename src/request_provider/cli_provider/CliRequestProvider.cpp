@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Request *CliRequestProvider::nextRequest() {
+Request *CliRequestProvider::nextRequest(ClientContext* cl) {
     vector<string> args; // holds the arguments of the request
     string input; // hold the input from the user
     string reqName; // holds the request name
@@ -29,3 +29,7 @@ Request *CliRequestProvider::nextRequest() {
 
     return Request::fromName(reqName, args, nullptr);
 };
+
+ClientContext *CliRequestProvider::acceptClient() {
+    return nullptr; // TODO change the return
+}

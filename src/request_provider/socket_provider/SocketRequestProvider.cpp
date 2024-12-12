@@ -46,7 +46,7 @@ SocketRequestProvider::~SocketRequestProvider() {
     close(this->serverSock);
 }
 
-Request *SocketRequestProvider::nextRequest() {
+ClientContext* SocketRequestProvider::acceptClient() {
     // struct to hold the client's IP and port
     struct sockaddr_in client_sin;
     unsigned int addr_len = sizeof(client_sin); // enter the size of the client_sin
@@ -60,12 +60,23 @@ Request *SocketRequestProvider::nextRequest() {
     }
     cout << "client accepted" << endl; // TODO: remove
 
+    // return the ClientContext with the client socket
+    return new ClientContext(client_sock);
+}
+
+Request *SocketRequestProvider::nextRequest(ClientContext* cl) {
+
+    bool hasError;
+
     // get the client msg into the stream
-    stringstream ss = this->readSocketToStream(client_sock);
+    stringstream ss = this->readSocketToStream(cl->getClientSocket(), &hasError);
 
     // if the stream is empty: handle the error
     if (ss.str().empty()) {
-        close(client_sock);
+        if (hasError) {
+            return new InvalidRequest();
+        }
+        close(cl->getClientSocket());
         return nullptr;
     }
 
@@ -78,11 +89,8 @@ Request *SocketRequestProvider::nextRequest() {
     // get the other arguments
     vector<string> args = this->parseArguments(ss);
 
-    // create a ClientContext with the client socket
-    ClientContext *clientContext = new ClientContext(client_sock);
-
     // return the request using from name function
-    return Request::fromName(reqName, args, clientContext);
+    return Request::fromName(reqName, args, cl);
 }
 
 vector<string> SocketRequestProvider::parseArguments(stringstream &ss) {
@@ -97,32 +105,7 @@ vector<string> SocketRequestProvider::parseArguments(stringstream &ss) {
     return args;
 }
 
-// stringstream SocketRequestProvider::readSocketToStream(int socket) {
-//     stringstream ss;
-//     char buffer[1024]; // temporary for incoming chunks
-//     int bytesReceived;
-//
-//     // read data from the socket in chunks
-//     while ((bytesReceived = recv(socket, buffer, sizeof(buffer) - 1, 0)) > 0) {
-//         cout << "reveiving..." << endl; // TODO: remove
-//         buffer[bytesReceived] = '\0';
-//         ss.write(buffer, bytesReceived);
-//         cout << "reveiving 2..." << endl; // TODO: remove
-//     }
-//
-//     // if there was problem
-//     if (bytesReceived < 0) {
-//         cout << "reveiving 2.2..." << endl; // TODO: remove
-//         perror("Error receiving data");
-//         ss.str(""); // reset the stream content
-//         ss.clear();
-//     }
-//     cout << "reveiving 3..." << endl; // TODO: remove
-//
-//     return ss;
-// }
-
-stringstream SocketRequestProvider::readSocketToStream(int socket) {
+stringstream SocketRequestProvider::readSocketToStream(int socket, bool* hasError) {
     std::stringstream ss;
     char buffer[1024]; // temporary for incoming chunks
 
@@ -131,7 +114,11 @@ stringstream SocketRequestProvider::readSocketToStream(int socket) {
     while (!finishedReceiving) {
         int bytesReceived = recv(socket, buffer, sizeof(buffer) - 1, 0);
         if (bytesReceived < 0) {
-            perror("recv failed");
+            *hasError = true;
+            return {};
+        }
+        if (bytesReceived == 0) {
+            *hasError = false;
             return {};
         }
 
@@ -145,6 +132,7 @@ stringstream SocketRequestProvider::readSocketToStream(int socket) {
         // Reset buffer for next chunk
         // memset(buffer, 0, sizeof(buffer));
     }
+    *hasError = false;
 
     return ss;
 }

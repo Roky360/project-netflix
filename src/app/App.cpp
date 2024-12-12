@@ -17,14 +17,9 @@ namespace app {
         auto *sm = StateManager::getInstance();
 
         while (true) {
-            Request *request = rp->nextRequest();
+            ClientContext* clientContext = rp->acceptClient();
 
-            // if there was a problem in the server, continue to the next
-            if (request == nullptr) {
-                continue;
-            }
-            re->execute(request);
-
+            re->execute(clientContext);
         }
     }
 } // app

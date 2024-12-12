@@ -1,6 +1,5 @@
 #include "ThreadRequestExecutor.h"
 
-
 void ThreadRequestExecutor::execute(Request *request) {
     thread t1(std::bind(&ThreadRequestExecutor::moveToSender, this, request));
     t1.join();

@@ -3,6 +3,8 @@
 #include "database/FilesDatabase.h"
 #include "request_provider/socket_provider/SocketRequestProvider.h"
 #include "request/all_requests.h"
+#include "response_sender/socket_sender/SocketResponseSender.h"
+#include "request_executor/threads_executor/ThreadRequestExecutor.h"
 
 using namespace app;
 using namespace db;
@@ -20,10 +22,11 @@ int main() {
     auto *sm = StateManager::getInstance();
     sm->setDb(new FilesDatabase());
     sm->setRequestMap(requestMap);
-    sm->setRequestProvider(new SocketRequestProvider(20200, "127.0.0.1", 10));
-
+    RequestProvider *rProvider = new SocketRequestProvider(20200, "127.0.0.1", 10);
+    ResponseSender *rSender = new SocketResponseSender;
+    RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender);
     // Run app
-    auto *app = new App();
+    auto *app = new App(rProvider, rSender, rExecutor);
     app->run();
 
     delete app;

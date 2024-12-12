@@ -11,7 +11,7 @@ public:
      * Executes each request according to their own execute method
      * @param request Request
      */
-    virtual void execute(Request request);
+    virtual void execute(Request *request);
 };
 
 

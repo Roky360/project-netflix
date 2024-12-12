@@ -1,7 +1,7 @@
 #include "InvalidRequest.h"
 #include "../Response.h"
 
-InvalidRequest::InvalidRequest() : Request() {
+InvalidRequest::InvalidRequest(const vector<string> &args, ClientContext *cl) : Request(args, cl) {
 }
 
 string InvalidRequest::getHelpMsg() {

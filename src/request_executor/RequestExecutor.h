@@ -13,9 +13,9 @@ public:
 
     /**
      * Executes each request according to their own execute method
-     * @param request Request
+     * @param clientContext the client context
      */
-    virtual void execute(Request *request) = 0;
+    virtual void execute(ClientContext* clientContext) = 0;
 };
 
 

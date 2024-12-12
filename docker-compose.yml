@@ -1,7 +1,3 @@
-#networks:
-#  nakniki_network_inc:
-#    driver: bridge
-
 services:
   # Run main application
   app:
@@ -12,11 +8,9 @@ services:
         BUILD_TESTS: "OFF"
     ports:
       - "20200:20200"
-#    networks:
-#      - nakniki_network_inc
     stdin_open: true                  # enable stdin to the container
     tty: true
-    command: ./build/project_netflix  # executable is located here
+    command: ./build/project_netflix 20200  # executable is located here
 
   # Run tests
   test:
@@ -38,7 +32,5 @@ services:
     network_mode: host
     depends_on:
       - app
-#    networks:
-#      - nakniki_network_inc
     stdin_open: true
     tty: true

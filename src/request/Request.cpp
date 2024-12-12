@@ -15,7 +15,7 @@ Request *Request::fromName(const string &reqName, vector<string> args, ClientCon
 
     // if he didn't find the request
     if (map.find(reqName) == map.end()) {
-        return new InvalidRequest();
+        return new InvalidRequest({}, cl);
     }
 
     // return the wanted request

@@ -8,7 +8,7 @@
  */
 class InvalidRequest : public Request {
 public:
-    InvalidRequest();
+    InvalidRequest(const vector<string> &args, ClientContext* cl);
 
     string getHelpMsg() override;
 

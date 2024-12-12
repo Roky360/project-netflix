@@ -1,18 +1,24 @@
 #include "ThreadRequestExecutor.h"
+#include "../../app/StateManager.h"
 
-#include <iostream>
-
-ThreadRequestExecutor::ThreadRequestExecutor(ResponseSender *responseSender) : RequestExecutor() {
+ThreadRequestExecutor::ThreadRequestExecutor(ResponseSender *responseSender, RequestProvider *rp) : RequestExecutor() {
     rSender = responseSender;
+    rProvider = rp;
 }
 
-void ThreadRequestExecutor::execute(Request *request) {
-    thread t1(std::bind(&ThreadRequestExecutor::moveToSender, this, request));
-    t1.join();
+void ThreadRequestExecutor::execute(ClientContext *clientContext) {
+    // thread clientHandlerThr(std::bind(&ThreadRequestExecutor::handleClient, this, clientContext));
+    auto t = new thread([this, clientContext] { handleClient(clientContext); });
+    this->clientHandlers.push_back(t);
 }
 
-void ThreadRequestExecutor::moveToSender(Request *request) {
-    Response *response = request->execute();
-    rSender->sendResponse(response);
-    cout << "sent to " << request->context->getClientSocket() << endl; // TODO: remove
+void ThreadRequestExecutor::handleClient(ClientContext *cl) {
+    while (true) {
+        Request *request = rProvider->nextRequest(cl);
+        if (request == nullptr) {
+            break;
+        }
+        Response *response = request->execute();
+        rSender->sendResponse(response);
+    }
 }

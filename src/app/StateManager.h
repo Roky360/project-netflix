@@ -26,8 +26,6 @@ namespace app {
         static StateManager *instance;
         Database *db{};
         map<string, requestGen> mapRequest;
-        RequestProvider *rp{};
-        ResponseSender *rs;
 
         StateManager() = default;
 
@@ -62,18 +60,6 @@ namespace app {
          * RequestProvider Getter
          * @return RequestProvider
          */
-        RequestProvider *getRequestProvider() const;
-
-        /**
-         * RequestProvide Setter
-         * @param rp RequestProvider
-         */
-        void setRequestProvider(RequestProvider *rp);
-
-        /**
-         * RequestMap Getter
-         * @return RequestMap
-         */
         map<string, requestGen> getRequestMap();
 
         /**
@@ -81,18 +67,6 @@ namespace app {
          * @param reqMap RequestMap
          */
         void setRequestMap(map<string, requestGen> reqMap);
-
-        /**
-         * ResponseSender Getter
-         * @return
-         */
-        ResponseSender* getResponseSender();
-
-        /**
-         * ResponseSender Setter
-         * @param sender ResponseSender
-         */
-        void setResponseSender(ResponseSender *sender);
 
     };
 }

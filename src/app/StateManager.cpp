@@ -6,7 +6,6 @@ namespace app {
 
     StateManager::~StateManager() {
         delete db;
-        delete rp;
     }
 
     StateManager *StateManager::getInstance() {
@@ -42,25 +41,6 @@ namespace app {
         pm->unlock();
     }
 
-    RequestProvider *StateManager::getRequestProvider() const {
-        // Locks for reading
-        auto *pm = PermissionManager::getInstance();
-        pm->requestRead();
-        RequestProvider *r = rp;
-        // Unlocks when finished reading
-        pm->unlock();
-        return r;
-    }
-
-    void StateManager::setRequestProvider(RequestProvider *rp) {
-        // Locks for writing
-        auto *pm = PermissionManager::getInstance();
-        pm->requestWrite();
-        this->rp = rp;
-        // Unlocks when finished writing
-        pm->unlock();
-    }
-
     map<string, requestGen> StateManager::getRequestMap() {
         // Locks for reading
         auto *pm = PermissionManager::getInstance();
@@ -76,25 +56,6 @@ namespace app {
         auto *pm = PermissionManager::getInstance();
         pm->requestWrite();
         mapRequest = std::move(reqMap);
-        // Unlocks when finished writing
-        pm->unlock();
-    }
-
-    ResponseSender *StateManager::getResponseSender() {
-        // Locks for reading
-        auto *pm = PermissionManager::getInstance();
-        pm->requestRead();
-        ResponseSender *res = rs;
-        // Unlocks when finished reading
-        pm->unlock();
-        return res;
-    }
-
-    void StateManager::setResponseSender(ResponseSender *sender) {
-        // Locks for writing
-        auto *pm = PermissionManager::getInstance();
-        pm->requestWrite();
-        this->rs = sender;
         // Unlocks when finished writing
         pm->unlock();
     }

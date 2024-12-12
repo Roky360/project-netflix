@@ -10,14 +10,13 @@ using namespace app;
 using namespace db;
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        cout << "Usage: " << argv[0] << " <ip_address> <port>" << endl;
+    if (argc != 2) {
+        cout << "Usage: " << argv[0] << " <port>" << endl;
         return 0;
     }
-    string ip = argv[1];
     int port;
     try {
-        port = stol(argv[2]);
+        port = stol(argv[1]);
         if (port <= 0)
             throw invalid_argument("Port must be positive");
     } catch (invalid_argument &_) {
@@ -37,7 +36,7 @@ int main(int argc, char *argv[]) {
     auto *sm = StateManager::getInstance();
     sm->setDb(new FilesDatabase());
     sm->setRequestMap(requestMap);
-    RequestProvider *rProvider = new SocketRequestProvider(port, ip, 10);
+    RequestProvider *rProvider = new SocketRequestProvider(port, "", 10);
     ResponseSender *rSender = new SocketResponseSender();
     RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender, rProvider);
     // Run app

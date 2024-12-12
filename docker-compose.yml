@@ -10,7 +10,7 @@ services:
       - "20200:20200"
     stdin_open: true                  # enable stdin to the container
     tty: true
-    command: ./build/project_netflix 0.0.0.0 20200  # executable is located here
+    command: ./build/project_netflix 20200  # executable is located here
 
   # Run tests
   test:

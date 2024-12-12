@@ -14,7 +14,6 @@ SocketRequestProvider::SocketRequestProvider(const int port, string ip, const in
     // create the socket and check if it worked
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("error creating socket");
         return;
     }
     this->serverSock = sock;
@@ -28,25 +27,22 @@ SocketRequestProvider::SocketRequestProvider(const int port, string ip, const in
 
     // bind the socket and check for error
     if (bind(this->serverSock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        perror("error binding socket");
         close(this->serverSock);
         return;
     }
 
     // listens for incoming connections. max 5 connections. check for errors
     if (listen(sock, this->backlogAmount) < 0) {
-        perror("error listening to a socket");
         close(this->serverSock);
         return;
     }
-    cout << "sock bind and listen to " << this->serverIP << " port " << this->serverPort << endl; // TODO: remove
 }
 
 SocketRequestProvider::~SocketRequestProvider() {
     close(this->serverSock);
 }
 
-ClientContext* SocketRequestProvider::acceptClient() {
+ClientContext *SocketRequestProvider::acceptClient() {
     // struct to hold the client's IP and port
     struct sockaddr_in client_sin;
     unsigned int addr_len = sizeof(client_sin); // enter the size of the client_sin
@@ -54,27 +50,23 @@ ClientContext* SocketRequestProvider::acceptClient() {
     // accept the connection
     int client_sock = accept(this->serverSock, (struct sockaddr *) &client_sin, &addr_len);
     if (client_sock < 0) {
-        perror("error accepting client");
-        close(this->serverSock);
+        close(client_sock);
         return nullptr;
     }
-    cout << "client accepted" << endl; // TODO: remove
 
     // return the ClientContext with the client socket
     return new ClientContext(client_sock);
 }
 
-Request *SocketRequestProvider::nextRequest(ClientContext* cl) {
-
-    bool hasError;
-
+Request *SocketRequestProvider::nextRequest(ClientContext *cl) {
     // get the client msg into the stream
+    bool hasError;
     stringstream ss = this->readSocketToStream(cl->getClientSocket(), &hasError);
 
     // if the stream is empty: handle the error
     if (ss.str().empty()) {
         if (hasError) {
-            return new InvalidRequest();
+            return new InvalidRequest({}, cl);
         }
         close(cl->getClientSocket());
         return nullptr;
@@ -105,18 +97,20 @@ vector<string> SocketRequestProvider::parseArguments(stringstream &ss) {
     return args;
 }
 
-stringstream SocketRequestProvider::readSocketToStream(int socket, bool* hasError) {
-    std::stringstream ss;
+stringstream SocketRequestProvider::readSocketToStream(int socket, bool *hasError) {
+    stringstream ss;
     char buffer[1024]; // temporary for incoming chunks
 
     // Read data from the socket in chunks
     bool finishedReceiving = false;
     while (!finishedReceiving) {
         int bytesReceived = recv(socket, buffer, sizeof(buffer) - 1, 0);
+        // error occurred while reading data
         if (bytesReceived < 0) {
             *hasError = true;
             return {};
         }
+        // gracefully stopping
         if (bytesReceived == 0) {
             *hasError = false;
             return {};
@@ -124,15 +118,12 @@ stringstream SocketRequestProvider::readSocketToStream(int socket, bool* hasErro
 
         ss.write(buffer, bytesReceived);
 
-        // Optional: check if you have received a complete message
+        // check if we got the whole message
         if (strchr(buffer, '\n')) {
             finishedReceiving = true;
         }
-
-        // Reset buffer for next chunk
-        // memset(buffer, 0, sizeof(buffer));
     }
-    *hasError = false;
 
+    *hasError = false;
     return ss;
 }

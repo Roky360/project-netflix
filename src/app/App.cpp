@@ -1,7 +1,5 @@
-#include <iostream>
 #include "App.h"
 #include "StateManager.h"
-#include "../request/Response.h"
 #include "../request/Request.h"
 #include "../request_provider/RequestProvider.h"
 #include "../request_executor/RequestExecutor.h"
@@ -14,12 +12,11 @@ namespace app {
     }
 
     void App::run() {
-        auto *sm = StateManager::getInstance();
-
         while (true) {
-            ClientContext* clientContext = rp->acceptClient();
-
-            re->execute(clientContext);
+            ClientContext *clientContext = rp->acceptClient();
+            if (clientContext != nullptr) {
+                re->execute(clientContext);
+            }
         }
     }
 } // app

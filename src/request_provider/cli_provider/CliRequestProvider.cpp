@@ -31,5 +31,5 @@ Request *CliRequestProvider::nextRequest(ClientContext* cl) {
 };
 
 ClientContext *CliRequestProvider::acceptClient() {
-    return nullptr; // TODO change the return
+    return {};
 }

@@ -10,9 +10,6 @@
 using namespace std;
 
 class ThreadRequestExecutor final : public RequestExecutor {
-    ResponseSender *rSender;
-    RequestProvider *rProvider;
-
 public:
     ~ThreadRequestExecutor() override = default;
 
@@ -29,11 +26,15 @@ public:
     void execute(ClientContext* clientContext) override;
 
 private:
+    ResponseSender *rSender;
+    RequestProvider *rProvider;
+    vector<thread *> clientHandlers;
+
     /**
      * Inner function that executes the request and sends it to the client
      * @param request Request
      */
-    void moveToSender(ClientContext* cl);
+    void handleClient(ClientContext* cl);
 };
 
 

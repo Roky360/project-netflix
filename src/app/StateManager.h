@@ -9,6 +9,7 @@
 #include "../database/Database.h"
 #include "../request/Request.h"
 #include "../request_provider/RequestProvider.h"
+#include "../response_sender/ResponseSender.h"
 
 using namespace db;
 using namespace std;
@@ -26,6 +27,7 @@ namespace app {
         Database *db{};
         map<string, requestGen> mapRequest;
         RequestProvider *rp{};
+        ResponseSender *rs;
 
         StateManager() = default;
 
@@ -79,6 +81,18 @@ namespace app {
          * @param reqMap RequestMap
          */
         void setRequestMap(map<string, requestGen> reqMap);
+
+        /**
+         * ResponseSender Getter
+         * @return
+         */
+        ResponseSender* getResponseSender();
+
+        /**
+         * ResponseSender Setter
+         * @param sender ResponseSender
+         */
+        void setResponseSender(ResponseSender *sender);
 
     };
 }

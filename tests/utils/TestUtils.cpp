@@ -1,5 +1,5 @@
 #include "TestUtils.h"
-#include "../../src/database/FilesDatabase.h"
+#include "../../src/database/files_database/FilesDatabase.h"
 #include <fstream>
 #include <sstream>
 

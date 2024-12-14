@@ -4,11 +4,14 @@
 #include "../Request.h"
 #include "../Response.h"
 
-class DeleteRequest : public Request{
+/**
+ * Deletes a movie from a user - marks a movie as unwatched by a user.
+ */
+class DeleteRequest : public Request {
 public:
     DeleteRequest();
 
-    explicit DeleteRequest(const vector<string> &args, ClientContext* cl);
+    explicit DeleteRequest(const vector<string> &args, ClientContext *cl);
 
     string getHelpMsg() override;
 

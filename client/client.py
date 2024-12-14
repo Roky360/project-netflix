@@ -15,9 +15,9 @@ def main():
         print("Port must be an integer")
         return 0
 
+    # establish connection with the server
     sock = socket(AF_INET, SOCK_STREAM)
-    print((ip, port))
-    sock.connect((ip, port))  # connect to server
+    sock.connect((ip, port))
 
     # receive requests from user, send to server and wait for response
     while True:

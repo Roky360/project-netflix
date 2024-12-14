@@ -14,7 +14,7 @@
 using namespace db;
 using namespace std;
 
-typedef Request *(*requestGen)(vector<string>, ClientContext*);
+typedef Request *(*requestGen)(vector<string>, ClientContext *);
 
 namespace app {
     /**
@@ -67,7 +67,6 @@ namespace app {
          * @param reqMap RequestMap
          */
         void setRequestMap(map<string, requestGen> reqMap);
-
     };
 }
 

@@ -1,7 +1,7 @@
 #ifndef PROJECT_NETFLIX_FILESDATABASE_H
 #define PROJECT_NETFLIX_FILESDATABASE_H
 
-#include "Database.h"
+#include "../Database.h"
 #include <iostream>
 #include <unordered_map>
 
@@ -24,10 +24,9 @@ namespace db {
         ~FilesDatabase() override = default;
 
     private:
-        void updateLine(int lineNum, string line);
+        void updateLine(int lineNum, string line) const;
 
     public:
-
         /* Methods */
 
         void loadDbFile();

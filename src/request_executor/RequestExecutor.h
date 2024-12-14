@@ -2,6 +2,7 @@
 #define PROJECT_NETFLIX_REQUESTEXECUTOR_H
 
 #include "../request/Request.h"
+
 /**
  * Executes client requests
  */
@@ -15,7 +16,7 @@ public:
      * Executes each request according to their own execute method
      * @param clientContext the client context
      */
-    virtual void execute(ClientContext* clientContext) = 0;
+    virtual void execute(ClientContext *clientContext) = 0;
 };
 
 

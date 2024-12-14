@@ -1,8 +1,7 @@
 #include "ClientContext.h"
-#include <stdexcept>
 
-ClientContext::ClientContext(int cs) : clientSocket(cs) {}
+ClientContext::ClientContext(const int cs) : clientSocket(cs) {}
 
-int ClientContext::getClientSocket() {
+int ClientContext::getClientSocket() const {
     return this->clientSocket;
 }

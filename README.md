@@ -79,13 +79,6 @@ git clone https://github.com/Roky360/project-netflix.git
 > docker-compose up test
 > ```
 
-### Ent-to-end tests
-
-> We also wrote end-to-end tests in Python to simulate the entire flow of the project. To run them just run (server needs to be running):
-> ```bash
-> docker-compose up e2e_tests
-> ```
-
 ---
 
 ## Available Commands

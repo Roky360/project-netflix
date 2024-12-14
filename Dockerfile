@@ -1,4 +1,5 @@
 FROM gcc:latest
+LABEL name="App"
 LABEL authors="Eden Kfir Avi"
 LABEL version="0.3"
 
@@ -10,8 +11,6 @@ RUN apt-get update && apt-get install -y cmake
 
 # Set the working directory
 WORKDIR /app
-
-EXPOSE 20200
 
 # Copy the project files and tests
 COPY CMakeLists.txt .

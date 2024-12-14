@@ -118,8 +118,8 @@ map<int, int> MoviesService::mapComparableMovies(int userID, int movieID, vector
             if (movieMap.find(j) == movieMap.end()) {
                 movieMap.emplace(j, ranks->at(k));
             }
-                //Otherwise, meaning both that the OG user hasn't watched it, and it is already somewhere in the map
-                //We will add to its recommendation value the user's rank
+            //Otherwise, meaning both that the OG user hasn't watched it, and it is already somewhere in the map
+            //We will add to its recommendation value the user's rank
             else {
                 movieMap[j] += ranks->at(k);
             }
@@ -135,7 +135,7 @@ bool MoviesService::userHasMovie(int userID, int movieID) {
     return db->userHasMovie(userID, movieID);
 }
 
-bool MoviesService::userExists (int userID) {
+bool MoviesService::userExists(int userID) {
     Database *db = StateManager::getInstance()->getDb();
     return db->userExists(userID);
 }

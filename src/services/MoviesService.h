@@ -4,11 +4,13 @@
 
 #ifndef PROJECT_NETFLIX_MOVIESSERVICE_H
 #define PROJECT_NETFLIX_MOVIESSERVICE_H
+
 #include "../database/Database.h"
 #include "../app/StateManager.h"
 #include <string>
 #include <vector>
 #include <algorithm>
+
 using namespace db;
 using namespace std;
 using namespace app;
@@ -65,8 +67,7 @@ public:
      * @param userID int, the user we wish to check
      * @return
      */
-    bool userExists (int userID);
-
+    bool userExists(int userID);
 
 private:
     /**

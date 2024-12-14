@@ -53,29 +53,37 @@ git clone https://github.com/Roky360/project-netflix.git
 > docker-compose up app
 > ```
 >
-> Then to use the terminal to interact with the app, run (you may need to open another terminal):
->
-> ```bash
-> docker attach project-netflix-app-1
-> ```
->
-> Finally, to stop the app, run:
+> To stop the app, Ctrl+C should work, or run:
 >
 > ```bash
 > docker stop project-netflix-app-1
 > ```
->
 
-> #### To run the unit-tests, run:
+### Run the client
+
+> To build the client, run (still in the project's root directory):
+> ```bash
+> docker-compose build client
+> ```
+>
+> Then, you can run as many client as you want simultaneously (each in its own terminal), with:
+> ```bash
+> docker-compose run client
+> ```
+> To stop each client, Ctrl+C should work.
+
+### Unit tests
+
+> To run the unit-tests (when the app is not running), run:
 > ```bash
 > docker-compose up test
 > ```
 
-### Run the client
+### Ent-to-end tests
 
-> To build and run the client, run (still in the project's root directory):
+> We also wrote end-to-end tests in Python to simulate the entire flow of the project. To run them just run (server needs to be running):
 > ```bash
-> docker-compose up client
+> docker-compose up e2e_tests
 > ```
 
 ---

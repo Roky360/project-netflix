@@ -10,13 +10,14 @@ namespace app {
      * Runs and manages the main routine of the application.
      */
     class App {
-        RequestProvider *rp;
-        ResponseSender *rs;
-        RequestExecutor *re;
+        RequestProvider *provider;
+        ResponseSender *sender;
+        RequestExecutor *executor;
+
     public:
         App(RequestProvider *provider, ResponseSender *sender, RequestExecutor *executor);
 
-        ~App() = default;
+        ~App();
 
         /**
          * Runs the main loop of handling requests.
@@ -24,7 +25,6 @@ namespace app {
          */
         void run();
     };
-
 } // app
 
 #endif //PROJECT_NETFLIX_APP_H

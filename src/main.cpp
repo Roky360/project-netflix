@@ -1,6 +1,6 @@
 #include "app/App.h"
 #include "app/StateManager.h"
-#include "database/FilesDatabase.h"
+#include "database/files_database/FilesDatabase.h"
 #include "request_provider/socket_provider/SocketRequestProvider.h"
 #include "request/all_requests.h"
 #include "response_sender/socket_sender/SocketResponseSender.h"
@@ -9,10 +9,11 @@
 using namespace app;
 using namespace db;
 
-int main(int argc, char *argv[]) {
+int main(const int argc, char *argv[]) {
+    // check that app port has been provided and that it is an integer
     if (argc != 2) {
         cout << "Usage: " << argv[0] << " <port>" << endl;
-        return 0;
+        return 1;
     }
     int port;
     try {
@@ -21,7 +22,7 @@ int main(int argc, char *argv[]) {
             throw invalid_argument("Port must be positive");
     } catch (invalid_argument &_) {
         cout << "Port must be a positive number" << endl;
-        return 0;
+        return 1;
     }
 
     // initialize supported requests map
@@ -39,6 +40,7 @@ int main(int argc, char *argv[]) {
     RequestProvider *rProvider = new SocketRequestProvider(port, "", 10);
     ResponseSender *rSender = new SocketResponseSender();
     RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender, rProvider);
+
     // Run app
     auto *app = new App(rProvider, rSender, rExecutor);
     app->run();

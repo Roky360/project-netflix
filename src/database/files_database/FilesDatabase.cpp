@@ -3,8 +3,8 @@
 #include <algorithm>
 #include "FilesDatabase.h"
 
-#include "../app/PermissionManager.h"
-#include "../utils/Utils.h"
+#include "../../app/PermissionManager.h"
+#include "../../utils/Utils.h"
 // include libraries to use mkdir method
 #ifdef _WIN32
 #include <direct.h>  // Windows-specific
@@ -51,7 +51,7 @@ namespace db {
         }
     }
 
-    void FilesDatabase::updateLine(const int lineNum, string line) {
+    void FilesDatabase::updateLine(const int lineNum, string line) const {
         PermissionManager::getInstance()->requestWrite();
 
         // if this line doesn't exist in the file yet

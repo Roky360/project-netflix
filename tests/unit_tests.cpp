@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-// #include "general_tests.h"
+#include "general_tests.h"
 #include "files_db_tests.h"
-// #include "recommendation_algo_tests.h"
+#include "recommendation_algo_tests.h"
 
 #include "../src/app/StateManager.h"
-#include "../src/database/FilesDatabase.h"
+#include "../src/database/files_database/FilesDatabase.h"
 #include "../src/request/all_requests.h"
 
 using namespace app;

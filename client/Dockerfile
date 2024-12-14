@@ -1,4 +1,5 @@
 FROM python:3.10.2
+LABEL name="Client"
 LABEL authors="Eden Kfir Avi"
 LABEL version="0.1"
 
@@ -12,5 +13,5 @@ ENV IP=${IP}
 ENV PORT=${PORT}
 
 # Run the client main with provided arguments
-#CMD ["sh", "-c", "python client.py $IP $PORT"]
-CMD ["python", "client.py", "localhost", "20200"]
+CMD ["sh", "-c", "python client.py $IP $PORT"]
+#CMD ["python", "client.py", "$IP", "$PORT"]

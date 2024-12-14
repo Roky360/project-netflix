@@ -1,5 +1,5 @@
 services:
-  # Run main application
+  # Server
   app:
     build:
       context: .
@@ -7,12 +7,10 @@ services:
       args:
         BUILD_TESTS: "OFF"
     ports:
-      - "20200:20200"
-    stdin_open: true                  # enable stdin to the container
-    tty: true
-    command: ./build/project_netflix 20200  # executable is located here
+      - "${PORT}:${PORT}"
+    command: ./build/project_netflix ${PORT}  # run executable with the server's port
 
-  # Run tests
+  # Unit tests
   test:
     build:
       context: .
@@ -21,16 +19,25 @@ services:
         BUILD_TESTS: "ON"
     command: ./build/tests/unit_tests  # executable is located here
 
-  # Run Python client
+  # Python client
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    environment:
-      IP: "127.0.0.1"
-      PORT: "20200"
-    network_mode: host
-    depends_on:
-      - app
-    stdin_open: true
+    environment:  # pass ip and port to the client
+      IP: $IP
+      PORT: $PORT
+    stdin_open: true  # make stdin available
     tty: true
+    network_mode: host
+    depends_on:  # needs the server to run
+      - app
+
+  # End-to-end tests
+  e2e_tests:
+    build:
+      context: ./client/e2e_tests
+      dockerfile: Dockerfile
+    network_mode: host
+    depends_on:  # needs the server to run
+      - app

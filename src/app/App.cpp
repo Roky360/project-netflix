@@ -6,16 +6,22 @@
 
 namespace app {
     App::App(RequestProvider *provider, ResponseSender *sender, RequestExecutor *executor) {
-        rp = provider;
-        rs = sender;
-        re = executor;
+        this->provider = provider;
+        this->sender = sender;
+        this->executor = executor;
+    }
+
+    App::~App() {
+        delete this->provider;
+        delete this->sender;
+        delete this->executor;
     }
 
     void App::run() {
         while (true) {
-            ClientContext *clientContext = rp->acceptClient();
+            ClientContext *clientContext = provider->acceptClient();
             if (clientContext != nullptr) {
-                re->execute(clientContext);
+                executor->execute(clientContext);
             }
         }
     }

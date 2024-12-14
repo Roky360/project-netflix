@@ -13,7 +13,7 @@ using namespace app;
  */
 class SocketRequestProvider : public RequestProvider {
 public:
-    ~SocketRequestProvider();
+    ~SocketRequestProvider() override;
 
     /**
      * return from the socket the wanted request with the arguments
@@ -44,7 +44,8 @@ private:
     /**
      * method that read the client input and enter it to string stream
      * @param socket the client socket
-     * @return string stream with the client msg
+     * @param hasError If error has occurred while reading from socket.
+     * @return string stream with the client msg. hasError may be checked by caller.
      */
     stringstream readSocketToStream(int socket, bool* hasError);
 

@@ -5,9 +5,16 @@
 #include "../src/services/MoviesService.h"
 #include "../src/request/post_request/PostRequest.h"
 #include "../src/database/files_database/FilesDatabase.h"
+#include "../src/app/StateManager.h"
+
+using namespace app;
 
 
 TEST(recommendation_algo_tests, recommendMovies_Final) {
+
+    // set new database
+    StateManager::getInstance()->setDb(new FilesDatabase());
+
     MoviesService *ms = MoviesService::getInstance();
     //Sets the file to have users and movies
     vector<string> v1 = {"1", "100", "101", "102", "103"};

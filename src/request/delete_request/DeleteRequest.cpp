@@ -47,7 +47,7 @@ Response* DeleteRequest::execute() {
     // check every movie if the user has them
     for (auto movieId : movies) {
         if (!service->userHasMovie(userId, movieId)) {
-            return new Response(NOT_FOUND_404, this->context);
+            return new Response(BAD_REQUEST_400, this->context);
         }
     }
 

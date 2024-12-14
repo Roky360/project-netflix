@@ -2,7 +2,7 @@
 #define FILES_DB_TESTS_H
 
 #include <gtest/gtest.h>
-#include "../src/database/FilesDatabase.h"
+#include "../src/database/files_database/FilesDatabase.h"
 #include "utils/TestUtils.h"
 #include "../src/utils/Utils.h"
 

@@ -5,8 +5,10 @@
 #include "utils/TestUtils.h"
 #include "../src/database/files_database/FilesDatabase.h"
 #include "../src/request/all_requests.h"
+#include "../src/app/StateManager.h"
 
 using namespace db;
+using namespace app;
 
 /**
  * test for post request
@@ -14,6 +16,9 @@ using namespace db;
  */
 TEST(Request, postRequest_sanityTest) {
     remove(FilesDatabase::DB_FILE_PATH.c_str());
+
+    // set new database
+    StateManager::getInstance()->setDb(new FilesDatabase());
 
     // create new post request with arguments
     vector<string> args = {"5", "135", "137", "168", "376"};
@@ -64,6 +69,11 @@ TEST(Request, postRequest_sanityTest) {
  * you can create user only with post request
  */
 TEST(Request, patchRequest_sanityTest) {
+    remove(FilesDatabase::DB_FILE_PATH.c_str());
+
+    // set new database
+    StateManager::getInstance()->setDb(new FilesDatabase());
+
     // first - lets create patch with not exist user and expect bad request
     Request *patchRec1 = new PatchRequest({"1", "100"}, nullptr);
     Response *res1 = patchRec1->execute();
@@ -101,6 +111,11 @@ TEST(Request, patchRequest_sanityTest) {
  * delete only if the user exist and only if the user has those movies
  */
 TEST(Request, deleteRequest_sanityTest) {
+    remove(FilesDatabase::DB_FILE_PATH.c_str());
+
+    // set new database
+    StateManager::getInstance()->setDb(new FilesDatabase());
+
     // create new post request with arguments
     vector<string> args = {"5", "135", "137", "168", "376"};
     string stringArgs = "5 135 137 168 376";

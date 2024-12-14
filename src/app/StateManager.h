@@ -9,6 +9,7 @@
 #include "../database/Database.h"
 #include "../request/Request.h"
 #include "../request_provider/RequestProvider.h"
+#include "../response_sender/ResponseSender.h"
 
 using namespace db;
 using namespace std;
@@ -25,7 +26,6 @@ namespace app {
         static StateManager *instance;
         Database *db{};
         map<string, requestGen> mapRequest;
-        RequestProvider *rp{};
 
         StateManager() = default;
 
@@ -59,18 +59,6 @@ namespace app {
         /**
          * RequestProvider Getter
          * @return RequestProvider
-         */
-        RequestProvider *getRequestProvider() const;
-
-        /**
-         * RequestProvide Setter
-         * @param rp RequestProvider
-         */
-        void setRequestProvider(RequestProvider *rp);
-
-        /**
-         * RequestMap Getter
-         * @return RequestMap
          */
         map<string, requestGen> getRequestMap();
 

@@ -6,9 +6,11 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_TESTS: "OFF"
+    ports:
+      - "20200:20200"
     stdin_open: true                  # enable stdin to the container
     tty: true
-    command: ./build/project_netflix  # executable is located here
+    command: ./build/project_netflix 20200  # executable is located here
 
   # Run tests
   test:
@@ -18,3 +20,17 @@ services:
       args:
         BUILD_TESTS: "ON"
     command: ./build/tests/unit_tests  # executable is located here
+
+  # Run Python client
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      IP: "127.0.0.1"
+      PORT: "20200"
+    network_mode: host
+    depends_on:
+      - app
+    stdin_open: true
+    tty: true

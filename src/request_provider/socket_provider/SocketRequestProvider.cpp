@@ -6,30 +6,83 @@
 #include <arpa/inet.h>    // For INADDR_ANY
 #include <sstream>        // For stringstream
 #include <iostream>       // For std::cerr
+#include <utility>
 
 // Constructor implementation
-SocketRequestProvider::SocketRequestProvider(int port, string ip, int backlog)
-    : serverPort(port), serverIP(ip), backlogAmount(backlog) {}
+SocketRequestProvider::SocketRequestProvider(const int port, string ip, const int backlog)
+    : serverPort(port), serverIP(std::move(ip)), backlogAmount(backlog) {
+    // create the socket and check if it worked
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0) {
+        return;
+    }
+    this->serverSock = sock;
 
-stringstream SocketRequestProvider::readSocketToStream(int socket) {
-    stringstream ss;
-    char buffer[1024]; // temporary for incoming chunks
-    int bytesReceived;
+    // create struct that holds the server IP and port. this will get the message. initializes the structure to zero.
+    struct sockaddr_in sin;
+    memset(&sin, 0, sizeof(sin));
+    sin.sin_family = AF_INET;
+    sin.sin_addr.s_addr = INADDR_ANY;
+    sin.sin_port = htons(this->serverPort);
 
-    // read data from the socket in chunks
-    while ((bytesReceived = recv(socket, buffer, sizeof(buffer) - 1, 0)) > 0) {
-        buffer[bytesReceived] = '\0';
-        ss << buffer;
+    // bind the socket and check for error
+    if (bind(this->serverSock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+        close(this->serverSock);
+        return;
     }
 
-    // if there was problem
-    if (bytesReceived < 0) {
-        perror("Error receiving data");
-        ss.str("");  // reset the stream content
-        ss.clear();
+    // listens for incoming connections. max 5 connections. check for errors
+    if (listen(sock, this->backlogAmount) < 0) {
+        close(this->serverSock);
+        return;
+    }
+}
+
+SocketRequestProvider::~SocketRequestProvider() {
+    close(this->serverSock);
+}
+
+ClientContext *SocketRequestProvider::acceptClient() {
+    // struct to hold the client's IP and port
+    struct sockaddr_in client_sin;
+    unsigned int addr_len = sizeof(client_sin); // enter the size of the client_sin
+
+    // accept the connection
+    int client_sock = accept(this->serverSock, (struct sockaddr *) &client_sin, &addr_len);
+    if (client_sock < 0) {
+        close(client_sock);
+        return nullptr;
     }
 
-    return ss;
+    // return the ClientContext with the client socket
+    return new ClientContext(client_sock);
+}
+
+Request *SocketRequestProvider::nextRequest(ClientContext *cl) {
+    // get the client msg into the stream
+    bool hasError;
+    stringstream ss = this->readSocketToStream(cl->getClientSocket(), &hasError);
+
+    // if the stream is empty: handle the error
+    if (ss.str().empty()) {
+        if (hasError) {
+            return new InvalidRequest({}, cl);
+        }
+        close(cl->getClientSocket());
+        return nullptr;
+    }
+
+    // holds the request name
+    string reqName;
+
+    // get the first word as the request name
+    ss >> reqName;
+
+    // get the other arguments
+    vector<string> args = this->parseArguments(ss);
+
+    // return the request using from name function
+    return Request::fromName(reqName, args, cl);
 }
 
 vector<string> SocketRequestProvider::parseArguments(stringstream &ss) {
@@ -44,71 +97,33 @@ vector<string> SocketRequestProvider::parseArguments(stringstream &ss) {
     return args;
 }
 
-Request* SocketRequestProvider::nextRequest() {
-    // create the socket and check if it worked
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock < 0) {
-        perror("error creating socket");
-        return nullptr;
+stringstream SocketRequestProvider::readSocketToStream(int socket, bool *hasError) {
+    stringstream ss;
+    char buffer[1024]; // temporary for incoming chunks
+
+    // Read data from the socket in chunks
+    bool finishedReceiving = false;
+    while (!finishedReceiving) {
+        int bytesReceived = recv(socket, buffer, sizeof(buffer) - 1, 0);
+        // error occurred while reading data
+        if (bytesReceived < 0) {
+            *hasError = true;
+            return {};
+        }
+        // gracefully stopping
+        if (bytesReceived == 0) {
+            *hasError = false;
+            return {};
+        }
+
+        ss.write(buffer, bytesReceived);
+
+        // check if we got the whole message
+        if (strchr(buffer, '\n')) {
+            finishedReceiving = true;
+        }
     }
 
-    // cretae struct that holds the server IP and port. this will get the message. initializes the structure to zero.
-    struct sockaddr_in sin;
-    memset(&sin,0,sizeof(sin));
-    sin.sin_family = AF_INET;
-    sin.sin_addr.s_addr = this->serverIP;
-    sin.sin_port = htons(this->serverPort);
-
-    // bind the socket and check for error
-    if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        perror("error binding socket");
-        close(sock);
-        return nullptr;
-    }
-
-    // listens for incoming connections. max 5 connections. check for errors
-    if (listen(sock, this->backlogAmount) < 0) {
-        perror("error listening to a socket");
-        close(sock);
-        return nullptr;
-    }
-
-    // struct to hold the client's IP and port
-    struct sockaddr_in client_sin;
-    unsigned int addr_len = sizeof(client_sin); // enter the size of the client_sin
-
-    // accept the connection
-    int client_sock = accept(sock, (struct sockaddr *) &client_sin,  &addr_len);
-    if (client_sock < 0) {
-        perror("error accepting client");
-        close(sock);
-        return nullptr;
-    }
-
-    // get the client msg into the stream
-    stringstream ss = this->readSocketToStream(client_sock);
-
-    // if the stream is empty: handle the error
-    if (ss.str().empty()) {
-        close(client_sock);
-        return nullptr;
-    }
-
-    // holds the request name
-    string reqName;
-
-    // get the first word as the request name
-    ss >> reqName;
-
-    // get the other arguments
-    vector<string> args = this->parseArguments(ss);
-
-    // create a ClientContext with the client socket
-    ClientContext* clientContext = new ClientContext(client_sock);
-
-    // close the server socket (if no further connections are required)
-    close(sock);
-
-    // return the request using from name function
-    return Request::fromName(reqName, args, clientContext);
+    *hasError = false;
+    return ss;
 }

@@ -14,7 +14,13 @@ public:
      * return from the user, in console, the wanted request
      * @return request
      */
-    Request *nextRequest() override;
+    Request *nextRequest(ClientContext* cl) override;
+
+    /**
+     * listen and accept the users. return the user context
+     * @return user context
+     */
+    ClientContext *acceptClient() override;
 };
 
 

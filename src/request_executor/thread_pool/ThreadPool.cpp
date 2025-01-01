@@ -1,7 +1,3 @@
-//
-// Created by avi on 12/29/2024.
-//
-
 #include "ThreadPool.h"
 
 

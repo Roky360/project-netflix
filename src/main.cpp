@@ -4,7 +4,7 @@
 #include "request_provider/socket_provider/SocketRequestProvider.h"
 #include "request/all_requests.h"
 #include "response_sender/socket_sender/SocketResponseSender.h"
-#include "request_executor/threads_executor/ThreadRequestExecutor.h"
+#include "request_executor/thr_pool_executor/ThrPoolRequestExecutor.h"
 
 using namespace app;
 using namespace db;
@@ -39,7 +39,8 @@ int main(const int argc, char *argv[]) {
     sm->setRequestMap(requestMap);
     RequestProvider *rProvider = new SocketRequestProvider(port, "", 10);
     ResponseSender *rSender = new SocketResponseSender();
-    RequestExecutor *rExecutor = new ThreadRequestExecutor(rSender, rProvider);
+    ThreadPool *pool = new ThreadPool(5);
+    RequestExecutor *rExecutor = new ThrPoolRequestExecutor(rProvider, rSender, pool);
 
     // Run app
     auto *app = new App(rProvider, rSender, rExecutor);

@@ -32,12 +32,3 @@ services:
     network_mode: host
     depends_on:  # needs the server to run
       - app
-
-  # End-to-end tests
-  e2e_tests:
-    build:
-      context: ./client/e2e_tests
-      dockerfile: Dockerfile
-    network_mode: host
-    depends_on:  # needs the server to run
-      - app

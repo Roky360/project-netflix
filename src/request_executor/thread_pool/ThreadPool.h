@@ -1,7 +1,3 @@
-//
-// Created by avi on 12/29/2024.
-//
-
 #ifndef NAKNIKI_NETFLIX_THREADPOOL_H
 #define NAKNIKI_NETFLIX_THREADPOOL_H
 
@@ -11,6 +7,7 @@
 #include <queue>
 #include <thread>
 #include <vector>
+
 using namespace std;
 
 class ThreadPool {
@@ -30,7 +27,8 @@ public:
      * Adds a task to the tasks queue
      * @param task function
      */
-    void enqueueTask(const std::function<void()>& task);
+    void enqueueTask(const std::function<void()> &task);
+
 private:
     // Vector to store worker threads
     vector<thread> threads;
@@ -47,10 +45,10 @@ private:
 
     // Flag to indicate whether the thread pool should stop
     // or not
-    bool stop = false;
+    bool stop;
 
     // Controls the thread distribution
-    void workerThread();
+    void workerRoutine();
 };
 
 

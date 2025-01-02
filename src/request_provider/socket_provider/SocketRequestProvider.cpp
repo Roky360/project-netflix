@@ -3,7 +3,6 @@
 #include <netinet/in.h>   // For sockaddr_in
 #include <unistd.h>       // For close()
 #include <cstring>        // For memset()
-#include <arpa/inet.h>    // For INADDR_ANY
 #include <sstream>        // For stringstream
 #include <iostream>       // For std::cerr
 #include <utility>

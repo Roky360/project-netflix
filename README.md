@@ -2,11 +2,17 @@
 
 _Avi Ben David, Kfir Eitan, Eden Shaked_
 
-Advanced Programming project - Netflix App.
+This is the recommendation server of the Netflix project.
 
 ###### _(UML below)_
 
-### Answers to the reflection questions in the assignment:
+## Important Links
+
+- [GitHub (This repo)](https://github.com/Roky360/project-netflix)
+- [GitHub (web server)](https://github.com/Roky360/nakniki-web-server)
+- [Jira](https://edenshkd.atlassian.net/jira/software/projects/NP/boards/2/backlog)
+
+### Answers to the reflection questions in the assignment (from part 2):
 
 - The renaming of commands doesn't require us to change the current implementation. We just had to rename the relevant
   classes and change the request names in the request map.
@@ -28,16 +34,11 @@ Advanced Programming project - Netflix App.
   ready for when we'll switch to a real database. As we said, we'll just create a new class implementing the interface,
   other parts of the code that uses the database will continue using it normally.
 
-## Important Links
-
-- [GitHub (This repo)](https://github.com/Roky360/project-netflix)
-- [Jira](https://edenshkd.atlassian.net/jira/software/projects/NP/boards/2/backlog)
-
 ---
 
 ## How to Run
 
-### Run with Docker
+### Setup
 
 To run the app with Docker, you need to have **Docker Desktop** installed, and to **clone** the repo with:
 
@@ -47,7 +48,7 @@ git clone https://github.com/Roky360/project-netflix.git
 
 ### Run the server
 
-> #### To build and run the app, run:
+> To build and run the app, run:
 >
 > ```bash
 > docker-compose up app
@@ -89,7 +90,7 @@ Right now, the server supports these commands:
 
   Marks movie(s) as watched by a user that **doesn't exist** yet.
 
-  > **POST** user-id [movie-id-1] [movie-id-2] ...
+  > **POST** [user-id] [movie-id-1] [movie-id-2] ...
 
   **Example: `POST 1 101 102 103 110`**
 
@@ -97,7 +98,7 @@ Right now, the server supports these commands:
 
   Marks movie(s) as watched by a user that **already exists**.
 
-  > **PATCH** user-id [movie-id-1] [movie-id-2] ...
+  > **PATCH** [user-id] [movie-id-1] [movie-id-2] ...
 
   **Example: `PATCH 1 101 102 103 110`**
 
@@ -119,7 +120,7 @@ Right now, the server supports these commands:
 
   **Example: `DELETE 1 101 103 102`**
 
-* ### Help
+* ### help
 
   Displays all the available commands.
 

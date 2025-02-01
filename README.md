@@ -4,13 +4,17 @@ _Avi Ben David, Kfir Eitan, Eden Shaked_
 
 This is the recommendation server of the Netflix project.
 
+> **Important:** The wiki for the project is in the [nakniki-website](https://github.com/Roky360/nakniki-website) repository.
+
+## Important links
+
+* [Jira](https://edenshkd.atlassian.net/jira/software/projects/NP/boards/2/backlog)
+* [GitHub - C++ Recommendation server (this repo)](https://github.com/Roky360/project-netflix)
+* [GitHub - Express web server](https://github.com/Roky360/nakniki-web-server)
+* [GitHub - React website](https://github.com/Roky360/nakniki-website)
+* [GitHub - Android app](https://github.com/Roky360/nakniki-app)
+
 ###### _(UML below)_
-
-## Important Links
-
-- [GitHub (This repo)](https://github.com/Roky360/project-netflix)
-- [GitHub (web server)](https://github.com/Roky360/nakniki-web-server)
-- [Jira](https://edenshkd.atlassian.net/jira/software/projects/NP/boards/2/backlog)
 
 ### Answers to the reflection questions in the assignment (from part 2):
 
